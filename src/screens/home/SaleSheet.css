@@ -170,10 +170,24 @@
   line-height: var(--leading-normal);
 }
 
+/* Native <input type="date">/<input type="time"> render their own locale
+   text (e.g. "Sep 5, 2026", "11:52 AM") as internal browser chrome, not
+   reflowable content — on iOS Safari that text does not shrink or wrap to
+   fit a narrow box, it just overflows past the border. Side-by-side halves
+   on a typical phone width (~165px each once padding is subtracted) are not
+   wide enough for that. Stack the two fields by default so each gets the
+   sheet's full width, and only go side-by-side once there is comfortably
+   enough room (tablet/desktop). */
 .sale-sheet__when {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
+}
+
+@media (min-width: 480px) {
+  .sale-sheet__when {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .sale-sheet__footer-row {
