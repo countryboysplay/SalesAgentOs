@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "SalesTrack - a local-only, offline-first personal sales performance tracker (PWA).",
+  "description": "SalesAgentOS - a local-only, offline-first personal sales performance tracker (PWA).",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

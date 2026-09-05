@@ -2,13 +2,26 @@ import type { ReactNode, HTMLAttributes, MouseEventHandler } from 'react'
 import './Card.css'
 
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg'
-export type CardTone = 'default' | 'flat' | 'sunken' | 'accent' | 'positive' | 'warning' | 'negative'
+export type CardTone =
+  | 'default'
+  | 'flat'
+  | 'sunken'
+  | 'accent'
+  | 'positive'
+  | 'warning'
+  | 'negative'
+  | 'glass'
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, 'title' | 'onClick'> {
   children: ReactNode
   /** Internal spacing. Default 'md' (20px) — spec §49 asks for generous padding. */
   padding?: CardPadding
-  /** Visual treatment. Use 'accent' at most once per screen. */
+  /**
+   * Visual treatment. Use 'accent' at most once per screen. 'glass' is the
+   * command-center HUD panel — frosted, glow-bordered — reserved for Home's
+   * primary cards; it renders a translucent backdrop-blur so use it against a
+   * screen background, not stacked on another surface.
+   */
   tone?: CardTone
   /** Optional header title rendered above the children. */
   title?: ReactNode
@@ -34,6 +47,7 @@ const TONE_CLASS: Record<CardTone, string> = {
   positive: 'card--positive',
   warning: 'card--warning',
   negative: 'card--negative',
+  glass: 'card--glass',
 }
 
 /**
@@ -64,6 +78,7 @@ export function Card({
 
   const inner = (
     <>
+      {tone === 'glass' && <span className="card__glass-sweep" aria-hidden="true" />}
       {(title || headerAction) && (
         <div className="card__header">
           {title ? <h2 className="card__title">{title}</h2> : <span />}

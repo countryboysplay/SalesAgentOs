@@ -59,7 +59,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
         <div className="loading__actions">
           <Button variant="primary" size="lg" onClick={this.reload}>
-            Reload SalesTrack
+            Reload SalesAgentOS
           </Button>
           <Button variant="ghost" onClick={this.reset}>
             Try this screen again

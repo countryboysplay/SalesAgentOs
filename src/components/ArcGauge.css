@@ -1,0 +1,89 @@
+/* ArcGauge — the semicircle goal dial (Home §10 HUD pass).
+   Tokens only. The glow is `filter: drop-shadow(var(--glow-shadow))`, which
+   already goes quiet in light theme (tokens.css) rather than needing its own
+   light/dark branch here. */
+
+.arc-gauge {
+  position: relative;
+  width: 118px;
+  height: 68px;
+  flex: none;
+  color: var(--accent);
+}
+
+.arc-gauge--tone-accent {
+  color: var(--accent);
+  --arc-gauge-grad-from: var(--minibar-grad-from);
+  --arc-gauge-grad-to: var(--minibar-grad-to);
+}
+
+.arc-gauge--tone-positive {
+  color: var(--positive);
+  --arc-gauge-grad-from: var(--positive);
+  --arc-gauge-grad-to: var(--positive);
+}
+
+.arc-gauge--tone-warning {
+  color: var(--warning);
+  --arc-gauge-grad-from: var(--warning);
+  --arc-gauge-grad-to: var(--warning);
+}
+
+.arc-gauge--tone-neutral {
+  color: var(--neutral);
+  --arc-gauge-grad-from: var(--neutral);
+  --arc-gauge-grad-to: var(--neutral);
+}
+
+.arc-gauge__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.arc-gauge__stop-start {
+  stop-color: var(--arc-gauge-grad-from, currentColor);
+}
+
+.arc-gauge__stop-end {
+  stop-color: var(--arc-gauge-grad-to, currentColor);
+}
+
+.arc-gauge__track {
+  stroke: var(--glass-border, var(--progress-track));
+  stroke-width: 9;
+}
+
+.arc-gauge__fill {
+  stroke-width: 9;
+  filter: drop-shadow(var(--glow-shadow));
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
+}
+
+.arc-gauge__readout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.arc-gauge__value {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: currentColor;
+  line-height: 1;
+}
+
+.arc-gauge__unit {
+  font-size: 0.625rem;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: var(--weight-bold);
+  margin-top: 1px;
+}

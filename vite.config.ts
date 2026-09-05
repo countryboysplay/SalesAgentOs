@@ -23,8 +23,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icons/*.png'],
       manifest: {
-        name: 'SalesTrack',
-        short_name: 'SalesTrack',
+        name: 'SalesAgentOS',
+        short_name: 'SalesAgentOS',
         description: 'Your personal sales ledger. Stored on this device.',
         theme_color: '#0B1220',
         background_color: '#0B1220',

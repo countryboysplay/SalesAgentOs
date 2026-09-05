@@ -42,14 +42,42 @@
                                  but kept >=3:1 so it is still perceivable. */
 
   /* ---------------------------------------------------------------------
-     ACCENT — strong electric blue.
+     ACCENT — command-center cyan (SalesAgentOS rebrand). A deep sky blue in
+     light mode so it still clears AA as a text colour and as a button fill
+     with white text; the same family goes electric in dark mode (§HUD).
      --------------------------------------------------------------------- */
-  --accent: #1d5bff;
-  --accent-hover: #1a4fe0;
-  --accent-active: #1743c2;
-  --accent-weak: #e8efff;     /* tinted background for selected chips etc. */
-  --accent-text: #1743c2;     /* accent-coloured TEXT on a light surface (AA) */
-  --accent-on: #ffffff;       /* foreground on an --accent fill */
+  --accent: #0369a1;
+  --accent-hover: #055b8c;
+  --accent-active: #045078;
+  --accent-weak: #e0f2fe;     /* tinted background for selected chips etc. */
+  --accent-text: #075985;     /* 7.56:1 on --surface, 7.12:1 on --ground (AA) */
+  --accent-on: #ffffff;       /* foreground on an --accent fill. 5.93:1. */
+
+  /* ---------------------------------------------------------------------
+     GLASS / GLOW — the HUD panel treatment (Home + shell this pass). Additive:
+     nothing above is read by the plain Card tones, only by `tone="glass"` and
+     the primitives that opt in (ArcGauge, MiniBars, the glow ProgressBar).
+     Light mode keeps the frosted structure but drops the neon — a coloured
+     blur on white reads as haze, not chrome, so the glow tokens go quiet
+     instead of just dimming (§ theme rule 6).
+     --------------------------------------------------------------------- */
+  --glass-surface: linear-gradient(160deg, rgba(255, 255, 255, 0.86), rgba(224, 242, 254, 0.65));
+  --glass-border: rgba(3, 105, 161, 0.22);
+  --glass-border-strong: rgba(3, 105, 161, 0.42);
+  --glass-blur: 16px;
+  --glass-shadow:
+    0 10px 28px rgb(20 35 60 / 10%),
+    0 2px 8px rgb(20 35 60 / 6%),
+    inset 0 1px 0 rgb(255 255 255 / 60%);
+  /* Text/box glows: `currentColor` so a caller sets one colour and gets a
+     matching glow. Light mode keeps a soft hint rather than none, so status
+     colour is never carried by hue alone even in the quiet variant (§63). */
+  --glow-text: none;
+  --glow-shadow: 0 0 6px color-mix(in srgb, currentColor 28%, transparent);
+  --glow-dot: 0 0 3px color-mix(in srgb, currentColor 35%, transparent);
+  --minibar-grad-from: #0369a1;
+  --minibar-grad-to: #38bdf8;
+  --brand-glow: none;
 
   /* ---------------------------------------------------------------------
      STATUS — spec §52. Each has: solid, weak background, and readable text.
@@ -83,7 +111,7 @@
   --border: #e4e8ee;
   --border-strong: #ccd3dd;
   --divider: #edf0f4;
-  --focus-ring: #1d5bff;
+  --focus-ring: #0369a1;
   --focus-ring-offset: var(--ground);
   --focus-ring-width: 2px;
   --focus-ring-offset-width: 2px;
@@ -245,12 +273,28 @@
     --text-inverse: #0b1220;
     --text-disabled: #66738b;
 
-    --accent: #4d8bff;
-    --accent-hover: #6c9eff;
-    --accent-active: #7fabff;
-    --accent-weak: #16264a;
-    --accent-text: #85aeff;
-    --accent-on: #06122c;
+    --accent: #38bdf8;
+    --accent-hover: #5cc9fa;
+    --accent-active: #7dd3fc;
+    --accent-weak: #10314a;
+    --accent-text: #7dd3fc;     /* 10.23:1 on --surface, 11.23:1 on --ground */
+    --accent-on: #062334;       /* dark ink on the fill: 7.55:1 (§ same pattern
+                                    as --positive-on — white would not clear). */
+
+    /* Glass / glow HUD tokens — dark is the mockup's native mode. */
+    --glass-surface: linear-gradient(160deg, rgba(27, 44, 74, 0.6), rgba(9, 15, 27, 0.46));
+    --glass-border: rgba(56, 189, 248, 0.32);
+    --glass-border-strong: rgba(56, 189, 248, 0.72);
+    --glass-blur: 16px;
+    --glass-shadow:
+      0 10px 34px rgb(2 6 14 / 50%),
+      inset 0 1px 0 rgb(255 255 255 / 5%);
+    --glow-text: 0 0 22px currentColor, 0 0 2px rgb(255 255 255 / 50%);
+    --glow-shadow: 0 0 10px currentColor;
+    --glow-dot: 0 0 6px currentColor;
+    --minibar-grad-from: #38bdf8;
+    --minibar-grad-to: #0ea5e9;
+    --brand-glow: drop-shadow(0 0 6px rgba(56, 189, 248, 0.65));
 
     --positive: #2fc98a;
     --positive-weak: #0f2f24;
@@ -274,7 +318,7 @@
     --border: #253046;
     --border-strong: #33415c;
     --divider: #1e2839;
-    --focus-ring: #6c9eff;
+    --focus-ring: #38bdf8;
     --focus-ring-offset: var(--ground);
 
     --progress-track: #1e2839;
@@ -293,7 +337,7 @@
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 32%), 0 2px 8px rgb(0 0 0 / 24%);
     --shadow-md: 0 4px 12px rgb(0 0 0 / 40%), 0 1px 3px rgb(0 0 0 / 28%);
     --shadow-lg: 0 16px 40px rgb(0 0 0 / 52%), 0 2px 8px rgb(0 0 0 / 32%);
-    --shadow-fab: 0 6px 18px rgb(0 0 0 / 50%), 0 0 0 1px rgb(77 139 255 / 22%);
+    --shadow-fab: 0 6px 18px rgb(0 0 0 / 50%), 0 0 0 1px rgb(56 189 248 / 26%);
   }
 }
 
@@ -318,12 +362,28 @@
   --text-inverse: #0b1220;
   --text-disabled: #66738b;
 
-  --accent: #4d8bff;
-  --accent-hover: #6c9eff;
-  --accent-active: #7fabff;
-  --accent-weak: #16264a;
-  --accent-text: #85aeff;
-  --accent-on: #06122c;
+  --accent: #38bdf8;
+  --accent-hover: #5cc9fa;
+  --accent-active: #7dd3fc;
+  --accent-weak: #10314a;
+  --accent-text: #7dd3fc;     /* 10.23:1 on --surface, 11.23:1 on --ground */
+  --accent-on: #062334;       /* dark ink on the fill: 7.55:1 (§ same pattern
+                                  as --positive-on — white would not clear). */
+
+  /* Glass / glow HUD tokens — dark is the mockup's native mode. */
+  --glass-surface: linear-gradient(160deg, rgba(27, 44, 74, 0.6), rgba(9, 15, 27, 0.46));
+  --glass-border: rgba(56, 189, 248, 0.32);
+  --glass-border-strong: rgba(56, 189, 248, 0.72);
+  --glass-blur: 16px;
+  --glass-shadow:
+    0 10px 34px rgb(2 6 14 / 50%),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+  --glow-text: 0 0 22px currentColor, 0 0 2px rgb(255 255 255 / 50%);
+  --glow-shadow: 0 0 10px currentColor;
+  --glow-dot: 0 0 6px currentColor;
+  --minibar-grad-from: #38bdf8;
+  --minibar-grad-to: #0ea5e9;
+  --brand-glow: drop-shadow(0 0 6px rgba(56, 189, 248, 0.65));
 
   --positive: #2fc98a;
   --positive-weak: #0f2f24;
@@ -347,7 +407,7 @@
   --border: #253046;
   --border-strong: #33415c;
   --divider: #1e2839;
-  --focus-ring: #6c9eff;
+  --focus-ring: #38bdf8;
   --focus-ring-offset: var(--ground);
 
   --progress-track: #1e2839;
@@ -366,7 +426,7 @@
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 32%), 0 2px 8px rgb(0 0 0 / 24%);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 40%), 0 1px 3px rgb(0 0 0 / 28%);
   --shadow-lg: 0 16px 40px rgb(0 0 0 / 52%), 0 2px 8px rgb(0 0 0 / 32%);
-  --shadow-fab: 0 6px 18px rgb(0 0 0 / 50%), 0 0 0 1px rgb(77 139 255 / 22%);
+  --shadow-fab: 0 6px 18px rgb(0 0 0 / 50%), 0 0 0 1px rgb(56 189 248 / 26%);
 }
 
 /* Explicit light. Present so the toggle wins over a dark system preference;

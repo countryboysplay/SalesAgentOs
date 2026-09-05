@@ -44,6 +44,78 @@
 .card--warning  { border-color: color-mix(in srgb, var(--warning) 34%, var(--border)); }
 .card--negative { border-color: color-mix(in srgb, var(--negative) 30%, var(--border)); }
 
+/* Glass — the command-center HUD panel (Home §10-§12, the rail). Frosted
+   backdrop-blur, a glowing cyan hairline border, corner brackets and a slow
+   scanning sweep. Every animation here is a CSS animation/transition, so the
+   global prefers-reduced-motion rule (global.css) neutralises it automatically
+   — nothing here needs its own reduced-motion branch. Light mode keeps the
+   frosted structure via --glass-* tokens but those tokens carry no neon, so
+   the same markup reads as a calm tinted card instead of a dark HUD (rule 6). */
+.card--glass {
+  background: var(--glass-surface);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+}
+
+/* Corner brackets — decorative, so they must never carry information alone
+   and must never intercept pointer events. */
+.card--glass::before,
+.card--glass::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  border: 1.5px solid var(--glass-border-strong);
+  z-index: 1;
+}
+
+.card--glass::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 6px 0 0 0;
+}
+
+.card--glass::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 6px 0;
+}
+
+/* The slow scan line across the top edge. */
+.card__glass-sweep {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--glass-border-strong), transparent);
+  animation: card-sweep 5s ease-in-out infinite;
+}
+
+@keyframes card-sweep {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
 /* Interactive card — renders as a <button>. */
 .card--interactive {
   display: block;

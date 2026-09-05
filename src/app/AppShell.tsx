@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
-import { Button } from '@/components'
+import { BrandMark, Button } from '@/components'
 import { Link, ROUTES, useRouter, type PrimaryTab } from './router'
 import { useAddSale } from './store'
 import './AppShell.css'
@@ -42,15 +42,6 @@ const PlusIcon = () => (
     aria-hidden="true"
   >
     <path d="M12 5v14M5 12h14" />
-  </svg>
-)
-
-const BrandMark = () => (
-  <svg className="shell__brand-mark" viewBox="0 0 64 64" aria-hidden="true">
-    <rect width="64" height="64" rx="15" fill="var(--accent)" />
-    <rect x="14" y="34" width="8" height="16" rx="3" fill="#fff" opacity="0.55" />
-    <rect x="28" y="26" width="8" height="24" rx="3" fill="#fff" opacity="0.78" />
-    <rect x="42" y="14" width="8" height="36" rx="3" fill="#fff" />
   </svg>
 )
 
@@ -137,8 +128,10 @@ export function AppShell({ children, overlays, chromeless = false }: AppShellPro
       {/* Desktop rail */}
       <nav className="shell__rail" aria-label="Main">
         <div className="shell__brand">
-          <BrandMark />
-          SalesTrack
+          <BrandMark size={28} />
+          <span>
+            SalesAgent<b>OS</b>
+          </span>
         </div>
 
         <Button

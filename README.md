@@ -1,4 +1,4 @@
-# SalesTrack
+# SalesAgentOS
 
 A personal sales-performance tracker for inside sales agents. It answers three
 questions the moment you open it: how am I doing today, this month, this year.

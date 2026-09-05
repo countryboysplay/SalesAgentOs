@@ -24,6 +24,9 @@
 .progress__fill {
   height: 100%;
   background: var(--progress-fill);
+  /* Matches `background` so `.progress--glow`'s `currentColor` box-shadow
+     glows the right hue without a separate glow colour per tone. */
+  color: var(--progress-fill);
   border-radius: var(--radius-full);
   transition: width var(--dur-slow) var(--ease-out);
   min-width: 0;
@@ -35,6 +38,7 @@
 .progress__overflow {
   height: 100%;
   background: var(--progress-overflow);
+  color: var(--progress-overflow);
   border-radius: 0 var(--radius-full) var(--radius-full) 0;
   transition: width var(--dur-slow) var(--ease-out);
   position: relative;
@@ -50,10 +54,23 @@
   background: var(--surface);
 }
 
-.progress--tone-positive .progress__fill { background: var(--positive); }
-.progress--tone-warning  .progress__fill { background: var(--warning); }
-.progress--tone-negative .progress__fill { background: var(--negative); }
-.progress--tone-neutral  .progress__fill { background: var(--neutral); }
+.progress--tone-positive .progress__fill { background: var(--positive); color: var(--positive); }
+.progress--tone-warning  .progress__fill { background: var(--warning); color: var(--warning); }
+.progress--tone-negative .progress__fill { background: var(--negative); color: var(--negative); }
+.progress--tone-neutral  .progress__fill { background: var(--neutral); color: var(--neutral); }
+
+/* ------------------------------------------------------------ glow (HUD) */
+/* Opt-in per instance (PaceCard's monthly bar). The glow itself comes from
+   --glow-shadow, which already goes quiet in light theme (tokens.css). */
+
+.progress--glow .progress__track {
+  border: 1px solid var(--glass-border);
+}
+
+.progress--glow .progress__fill,
+.progress--glow .progress__overflow {
+  box-shadow: var(--glow-shadow);
+}
 
 /* Expected-by-today marker (§12 pace, §23 month progress). */
 .progress__marker {

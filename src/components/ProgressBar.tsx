@@ -28,6 +28,13 @@ export interface ProgressBarProps {
   tone?: ProgressTone
   size?: ProgressSize
   /**
+   * HUD treatment for the glass panels (§10-§12 pass): a glass-tinted track
+   * and a glow on the fill, via the same `--glow-shadow` token every other
+   * glow reads from. Goes quiet in light theme automatically (tokens.css) —
+   * this never needs its own light/dark branch.
+   */
+  glow?: boolean
+  /**
    * Accessible name. REQUIRED — a bare bar with no label is meaningless to a
    * screen reader. e.g. "Monthly goal progress".
    */
@@ -64,6 +71,7 @@ export function ProgressBar({
   markerLabel,
   tone = 'accent',
   size = 'md',
+  glow = false,
   label,
   className,
 }: ProgressBarProps) {
@@ -87,6 +95,7 @@ export function ProgressBar({
     `progress--${size}`,
     `progress--tone-${tone}`,
     isOver ? 'progress--over' : '',
+    glow ? 'progress--glow' : '',
     className ?? '',
   ]
     .filter(Boolean)

@@ -1,20 +1,25 @@
 /**
- * Today's Score Card — spec §10. The largest component on the screen.
+ * Today's Score Card — spec §10. The largest component on the screen, and the
+ * flagship for the command-center HUD pass: a glass panel, an animated hero
+ * figure and an arc gauge for the daily goal.
  *
  * Every figure here arrives pre-computed from src/core/calc; this file only
  * decides how it reads. When no daily goal is in force it drops the percentage
  * language entirely and simply states "$742 Sold Today" (§10).
  */
-import { Card, ProgressBar, StatGrid, StatTile } from '@/components'
+import { useEffect, useRef, useState } from 'react'
+import { ArcGauge, Card, StatGrid, StatTile } from '@/components'
 import { formatCurrency, formatPercent, formatSignedCurrency } from '@/core/format'
 import type { FormatSettings } from '@/core/format'
-import type { PaceResult, PaceStatus, PeriodTotals } from '@/core/types'
+import type { Cents, PaceResult, PaceStatus, PeriodTotals } from '@/core/types'
 import { PaceGlyph, paceTone, paceWord } from './paceStatus'
 
 export interface TodayScoreCardProps {
   totals: PeriodTotals
   pace: PaceResult
   settings: FormatSettings
+  /** Settings.reducedMotion — gates the hero count-up (§5 motion rule). */
+  reducedMotion?: boolean
 }
 
 /**
@@ -33,8 +38,83 @@ function goalMet(pace: PaceResult): boolean {
   return pace.goal !== null && pace.goal > 0 && pace.remaining <= 0
 }
 
-export function TodayScoreCard({ totals, pace, settings }: TodayScoreCardProps) {
-  const net = formatCurrency(totals.netSales, settings)
+/**
+ * True while the OS or Settings > Appearance says to skip motion. Checked via
+ * matchMedia directly (mirroring the approved mockup's own gate) and ORed with
+ * the `reducedMotion` prop so Settings.reducedMotion — which already zeroes
+ * every `--dur-*` token app-wide via `data-reduced-motion` — also stops this
+ * one JS-driven tween, the one animation on the screen CSS alone cannot reach.
+ */
+function useEffectiveReducedMotion(forced: boolean): boolean {
+  const [systemReduced, setSystemReduced] = useState<boolean>(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  })
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = () => setSystemReduced(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  return forced || systemReduced
+}
+
+const COUNT_UP_MS = 450
+
+/**
+ * Tweens the hero figure from its previous cents value to `target` whenever
+ * `target` changes — never on first mount, so the very first paint always
+ * shows the real total instead of animating up from zero. Cubic ease-out,
+ * matching the approved mockup's own easing curve.
+ */
+function useCountUp(target: Cents, reducedMotion: boolean): Cents {
+  const [display, setDisplay] = useState(target)
+  const displayRef = useRef(target)
+  const mounted = useRef(false)
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true
+      displayRef.current = target
+      setDisplay(target)
+      return
+    }
+    if (displayRef.current === target) return
+
+    if (reducedMotion) {
+      displayRef.current = target
+      setDisplay(target)
+      return
+    }
+
+    const from = displayRef.current
+    const delta = target - from
+    const start = performance.now()
+    let raf = 0
+
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / COUNT_UP_MS)
+      const eased = 1 - Math.pow(1 - p, 3)
+      const next = Math.round(from + delta * eased)
+      displayRef.current = next
+      setDisplay(next)
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [target, reducedMotion])
+
+  return display
+}
+
+export function TodayScoreCard({ totals, pace, settings, reducedMotion = false }: TodayScoreCardProps) {
+  const effectiveReducedMotion = useEffectiveReducedMotion(reducedMotion)
+  const heroCents = useCountUp(totals.netSales, effectiveReducedMotion)
+  const net = formatCurrency(heroCents, settings)
   const hasGoal = pace.goal !== null && pace.goal > 0
   const applies = paceApplies(pace)
   const met = goalMet(pace)
@@ -49,13 +129,14 @@ export function TodayScoreCard({ totals, pace, settings }: TodayScoreCardProps) 
   if (!hasGoal) {
     // §10: no goal, no invented comparison. Just the figure and what it is.
     return (
-      <Card tone="accent" padding="lg" className="score">
+      <Card tone="glass" padding="lg" className="score">
         <div className="score__hero">
           <StatTile
             label="Today"
             value={net}
             sub="Sold today"
             size="hero"
+            className="score__hero-figure"
             ariaLabel={`${net} sold today`}
           />
         </div>
@@ -70,30 +151,29 @@ export function TodayScoreCard({ totals, pace, settings }: TodayScoreCardProps) 
   const percent = formatPercent(pace.progress, settings)
 
   return (
-    <Card tone="accent" padding="lg" className="score">
+    <Card tone="glass" padding="lg" className="score">
       <div className="score__hero">
         <StatTile
           label="Today"
           value={net}
           sub={`of ${goal} goal`}
           size="hero"
+          className="score__hero-figure"
           ariaLabel={`${net} today, of a ${goal} daily goal`}
         />
-        <p className={`score__percent score__percent--${tone}`}>
-          <PaceGlyph status={displayStatus} className="score__percent-glyph" />
-          <span className="num">{percent}</span>
-          <span className="sr-only">of your daily goal — {statusWord}</span>
-        </p>
+        <ArcGauge
+          progress={pace.progress}
+          valueLabel={percent}
+          unitLabel="of goal"
+          tone={tone}
+          label={`${percent} of your ${goal} daily goal — ${statusWord}`}
+        />
       </div>
 
-      <ProgressBar
-        value={pace.progress}
-        label="Daily goal progress"
-        caption={`${net} of ${goal}`}
-        hideValueLabel
-        tone={tone}
-        size="lg"
-      />
+      <p className={`score__status score__status--${tone}`}>
+        <PaceGlyph status={displayStatus} className="score__status-glyph" />
+        {statusWord}
+      </p>
 
       <SupportingStats totals={totals} pace={pace} settings={settings} hasGoal />
     </Card>

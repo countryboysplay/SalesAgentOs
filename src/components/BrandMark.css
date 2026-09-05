@@ -1,0 +1,7 @@
+/* BrandMark — the SalesAgentOS mark. The glow token goes quiet in light
+   theme (tokens.css), so this needs no light/dark branch of its own. */
+
+.brand-mark {
+  flex: none;
+  filter: var(--brand-glow);
+}

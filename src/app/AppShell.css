@@ -35,7 +35,7 @@
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
   backdrop-filter: saturate(180%) blur(16px);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--glass-border);
   padding-bottom: var(--safe-bottom);
   padding-inline: max(0px, var(--safe-left)) max(0px, var(--safe-right));
 }
@@ -73,6 +73,13 @@
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+}
+
+/* Glow on the active glyph — a second signal beyond colour and weight (§63
+   already covers the word/weight; this is purely decorative on top). */
+.shell__nav-item[aria-current='page'] .shell__nav-icon,
+.shell__rail-item[aria-current='page'] .shell__nav-icon {
+  filter: drop-shadow(var(--glow-shadow));
 }
 
 /* The + Sale button. Thumb-reachable, above the nav, on every screen (§6). */
@@ -142,8 +149,10 @@
     align-self: start;
     height: 100dvh;
     padding: var(--space-6) var(--space-3);
-    border-right: 1px solid var(--border);
-    background: var(--surface);
+    border-right: 1px solid var(--glass-border);
+    background: var(--glass-surface);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
     overflow-y: auto;
   }
 
@@ -158,11 +167,9 @@
     color: var(--text-primary);
   }
 
-  .shell__brand-mark {
-    width: 28px;
-    height: 28px;
-    border-radius: var(--radius-sm);
-    flex-shrink: 0;
+  .shell__brand b {
+    color: var(--accent-text);
+    font-weight: var(--weight-bold);
   }
 
   .shell__rail-cta {

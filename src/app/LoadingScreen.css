@@ -19,9 +19,6 @@
 }
 
 .loading__mark {
-  width: 68px;
-  height: 68px;
-  border-radius: var(--radius-lg);
   margin-bottom: var(--space-2);
   animation: loading-mark-in var(--dur-slow) var(--ease-out);
 }

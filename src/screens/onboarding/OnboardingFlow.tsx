@@ -10,7 +10,7 @@
  */
 import { useMemo, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
-import { Button, Chip } from '@/components'
+import { BrandMark, Button, Chip } from '@/components'
 import { useActions, useSettings, useStoreStatus } from '@/app/store'
 import type { OnboardingPayload } from '@/app/store'
 import { requestPersistentStorage } from '@/data'
@@ -92,15 +92,6 @@ interface OnboardingDraft {
 let sessionDraft: OnboardingDraft | null = null
 
 /* ------------------------------------------------------------------- icons */
-
-const BrandMark = () => (
-  <svg className="ob__mark" viewBox="0 0 64 64" aria-hidden="true">
-    <rect width="64" height="64" rx="15" fill="var(--accent)" />
-    <rect x="14" y="34" width="8" height="16" rx="3" fill="#fff" opacity="0.55" />
-    <rect x="28" y="26" width="8" height="24" rx="3" fill="#fff" opacity="0.78" />
-    <rect x="42" y="14" width="8" height="36" rx="3" fill="#fff" />
-  </svg>
-)
 
 const CheckGlyph = () => (
   <svg className="ob__weekday-check" viewBox="0 0 16 16" aria-hidden="true">
@@ -322,8 +313,10 @@ export function OnboardingFlow() {
       <div className="ob ob--welcome">
         <div className="ob__inner">
           <div className="ob__brand">
-            <BrandMark />
-            SalesTrack
+            <BrandMark size={40} className="ob__mark" />
+            <span>
+              SalesAgent<b>OS</b>
+            </span>
           </div>
 
           <div className="ob__body">

@@ -38,7 +38,7 @@ export function PaceCard({ pace, settings, monthLabel }: PaceCardProps) {
 
   if (pace.status === 'no-goal') {
     return (
-      <Card padding="md" className="pace pace--quiet">
+      <Card tone="glass" padding="md" className="pace pace--quiet">
         <p className="eyebrow">Monthly pace</p>
         <p className="pace__quiet-line num">
           {formatCurrency(pace.actual, settings)}{' '}
@@ -70,7 +70,7 @@ export function PaceCard({ pace, settings, monthLabel }: PaceCardProps) {
         : 'behind where you need to be'
 
   return (
-    <Card padding="md" className="pace">
+    <Card tone="glass" padding="md" className="pace">
       <div className="pace__head">
         <StatTile
           label="Monthly pace"
@@ -96,7 +96,8 @@ export function PaceCard({ pace, settings, monthLabel }: PaceCardProps) {
         markerLabel="Expected by today"
         tone={tone}
         hideValueLabel
-        size="md"
+        size="lg"
+        glow
       />
 
       <dl className="pace__figures">

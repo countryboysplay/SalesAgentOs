@@ -20,12 +20,14 @@ import {
   annualPace,
   countByDay,
   dailyPace,
+  dailySeries,
   monthlyPace,
+  monthlySeries,
   personalRecords,
   totalsForDay,
   totalsForYear,
 } from '@/core/calc'
-import { monthKey, todayIso } from '@/core/date'
+import { addDays, monthKey, todayIso } from '@/core/date'
 import { formatDate } from '@/core/format'
 import type { IsoDate, Sale } from '@/core/types'
 import TodayScoreCard from './TodayScoreCard'
@@ -134,6 +136,23 @@ export function HomeScreen() {
 
   const todaySales = salesByDate.get(today) ?? NO_SALES
 
+  /**
+   * MiniBars sparklines (§11 HUD pass) — real, already-aggregated figures,
+   * never invented. Month: the last 7 calendar days, oldest first. Year: net
+   * sales for each elapsed month this year, January through the current one.
+   */
+  const monthTrend = useMemo(
+    () => dailySeries(sales, addDays(today, -6), today).map((point) => point.netSales),
+    [sales, today],
+  )
+  const yearTrend = useMemo(() => {
+    const year = Number(today.slice(0, 4))
+    const elapsedMonths = Number(today.slice(5, 7))
+    return monthlySeries(sales, year)
+      .slice(0, elapsedMonths)
+      .map((point) => point.netSales)
+  }, [sales, today])
+
   /* --------------------------------------------------- celebration (§53) */
 
   const dailyReached = useOneShot(daily.status === 'goal-reached', `daily:${today}`)
@@ -171,7 +190,12 @@ export function HomeScreen() {
 
       <div className="shell-split home__split">
         <div className="shell-stack home__primary">
-          <TodayScoreCard totals={todayTotals} pace={daily} settings={settings} />
+          <TodayScoreCard
+            totals={todayTotals}
+            pace={daily}
+            settings={settings}
+            reducedMotion={settings.reducedMotion === true}
+          />
 
           <QuickPerformanceStrip
             month={monthly}
@@ -179,6 +203,8 @@ export function HomeScreen() {
             commission={yearTotals.estimatedCommission}
             commissionEnabled={settings.commissionEnabled}
             settings={settings}
+            monthTrend={monthTrend}
+            yearTrend={yearTrend}
           />
 
           <PaceCard

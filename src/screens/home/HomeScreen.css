@@ -32,46 +32,61 @@
 
 .score__hero {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
   flex-wrap: wrap;
 }
 
-.score__percent {
+/* The glow-colour hero figure. Value colour + text-shadow, on top of
+   whatever StatTile size/weight already applies — --glow-text goes quiet in
+   light theme (tokens.css), so no separate light/dark rule is needed here. */
+.score__hero-figure .stat__value {
+  color: var(--accent-text);
+  text-shadow: var(--glow-text);
+}
+
+/* Status word + glyph — what used to sit beside the bare percent now that the
+   percent itself lives inside ArcGauge's readout. Same tone/word/glyph logic
+   (paceStatus.tsx), just relocated under the hero row. */
+.score__status {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--num-md);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
-  padding-bottom: var(--space-1);
   margin: 0;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  align-self: flex-start;
 }
 
-.score__percent-glyph {
+.score__status-glyph {
   flex: none;
 }
 
-.score__percent--positive {
+.score__status--positive {
+  background: var(--positive-weak);
   color: var(--positive-text);
 }
 
-.score__percent--warning {
+.score__status--warning {
+  background: var(--warning-weak);
   color: var(--warning-text);
 }
 
-.score__percent--accent {
+.score__status--accent {
+  background: var(--accent-weak);
   color: var(--accent-text);
 }
 
-.score__percent--neutral {
+.score__status--neutral {
+  background: var(--neutral-weak);
   color: var(--neutral-text);
 }
 
 .score__stats {
-  border-top: 1px solid var(--divider);
+  border-top: 1px solid var(--glass-border);
   padding-top: var(--space-4);
 }
 
@@ -80,6 +95,10 @@
 .quick-strip__card {
   width: 100%;
   text-align: left;
+}
+
+.quick-strip__trend {
+  margin-top: var(--space-3);
 }
 
 /* -------------------------------------------------------- pace card (§12) */
@@ -146,7 +165,7 @@
   gap: var(--space-3);
   margin: 0;
   padding: var(--space-3) 0 0;
-  border-top: 1px solid var(--divider);
+  border-top: 1px solid var(--glass-border);
 }
 
 .pace__figure {
