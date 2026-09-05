@@ -1,0 +1,53 @@
+/* EmptyState — spec §57. "New accounts should not look broken."
+   Confident and quiet: a mark, a headline, one line of support, one action. */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-5);
+}
+
+.empty--compact {
+  padding: var(--space-6) var(--space-4);
+  gap: var(--space-2);
+}
+
+.empty__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-1);
+}
+
+.empty--compact .empty__mark {
+  width: 40px;
+  height: 40px;
+}
+
+.empty__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--leading-snug);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.empty__body {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  max-width: 34ch;
+  margin: 0;
+}
+
+.empty__action {
+  margin-top: var(--space-3);
+}

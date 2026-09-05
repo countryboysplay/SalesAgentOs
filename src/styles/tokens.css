@@ -1,0 +1,383 @@
+/* =========================================================================
+   SalesTrack — Design Tokens
+   Owner: Design System. Spec §46 (light), §47 (dark), §48 (type), §49 (cards),
+   §50 (numbers), §51 (progress), §52 (performance states).
+
+   RULES FOR EVERY CONSUMER
+   1. Never hard-code a colour, radius, shadow or font size in a screen.
+      If a value is missing, ask for a token — do not invent a literal.
+   2. Every colour is defined on bare :root first. Dark mode only REDEFINES.
+      No colour has its sole definition inside a media query.
+   3. Theme resolution order:
+        :root                                   -> light (default)
+        @media (prefers-color-scheme: dark)
+          :root:not([data-theme="light"])       -> system dark
+        :root[data-theme="dark"]                -> explicit dark (always wins)
+      ThemeProvider writes data-theme on <html>. "system" removes the attribute.
+   ========================================================================= */
+
+:root {
+  color-scheme: light;
+
+  /* ---------------------------------------------------------------------
+     SURFACES — spec §46. Soft off-white ground, white cards.
+     --------------------------------------------------------------------- */
+  --ground: #f7f8fa;          /* app background, behind everything */
+  --surface: #ffffff;         /* card / sheet / nav background */
+  --surface-elevated: #ffffff;/* sheets, popovers — pair with --shadow-lg */
+  --surface-sunken: #eef0f4;  /* wells, track backgrounds, inert chips */
+  --surface-hover: #f1f3f7;   /* row/button hover wash */
+  --surface-active: #e7eaf0;  /* pressed state wash */
+  --scrim: rgb(11 17 26 / 45%); /* behind modals and sheets */
+
+  /* ---------------------------------------------------------------------
+     TEXT — near-black primary, cool-gray secondary.
+     --------------------------------------------------------------------- */
+  --text-primary: #0e1116;
+  --text-secondary: #5a6472;
+  --text-tertiary: #666e7c;   /* labels, timestamps, meta. Never body copy.
+                                 5.14:1 on --surface, 4.84:1 on --ground (AA). */
+  --text-inverse: #ffffff;    /* on accent / positive / negative fills */
+  --text-disabled: #7d8796;   /* Inactive controls only (exempt from 1.4.3),
+                                 but kept >=3:1 so it is still perceivable. */
+
+  /* ---------------------------------------------------------------------
+     ACCENT — strong electric blue.
+     --------------------------------------------------------------------- */
+  --accent: #1d5bff;
+  --accent-hover: #1a4fe0;
+  --accent-active: #1743c2;
+  --accent-weak: #e8efff;     /* tinted background for selected chips etc. */
+  --accent-text: #1743c2;     /* accent-coloured TEXT on a light surface (AA) */
+  --accent-on: #ffffff;       /* foreground on an --accent fill */
+
+  /* ---------------------------------------------------------------------
+     STATUS — spec §52. Each has: solid, weak background, and readable text.
+     NEVER use these as the only signal — always pair with a word or icon (§63).
+     --------------------------------------------------------------------- */
+  --positive: #0e9f63;
+  --positive-weak: #e2f6ed;
+  --positive-text: #0a7a4c;
+  --positive-on: #04231a;     /* White clears only 3.41:1 on --positive; this
+                                 dark ink clears 4.89:1. */
+
+  --warning: #a06a12;         /* 4.60:1 vs white, 4.34:1 vs --ground (AA text
+                                 on the fill AND >=3:1 as a graphical object). */
+  --warning-weak: #fdf2dd;
+  --warning-text: #96601a;
+  --warning-on: #ffffff;
+
+  --negative: #c93a3a;        /* 5.06:1 vs white — .btn--danger carries white
+                                 label text, so the fill must clear 4.5:1. */
+  --negative-weak: #fceaea;
+  --negative-text: #b3302f;
+  --negative-on: #ffffff;
+
+  --neutral: #6b7688;
+  --neutral-weak: #eef0f4;
+  --neutral-text: #4d5766;
+
+  /* ---------------------------------------------------------------------
+     LINES & FOCUS — spec §49 (minimal border), §63 (clear focus state).
+     --------------------------------------------------------------------- */
+  --border: #e4e8ee;
+  --border-strong: #ccd3dd;
+  --divider: #edf0f4;
+  --focus-ring: #1d5bff;
+  --focus-ring-offset: var(--ground);
+  --focus-ring-width: 2px;
+  --focus-ring-offset-width: 2px;
+
+  /* Progress bar (§51). The overflow segment paints the portion past 100%. */
+  --progress-track: #e6e9ef;
+  --progress-fill: var(--accent);
+  --progress-overflow: #0e9f63;   /* beyond 100% reads as a win, not an error */
+
+  /* Chart ink — hand-rolled SVG charts live in the Insights screens. */
+  --chart-grid: #e9ecf1;
+  --chart-axis: #7e8898;   /* 3.58:1 on --surface (1.4.11 graphical object) */
+  --chart-series-1: #1d5bff;
+  --chart-series-2: #0e9f63;
+  --chart-series-3: #b07400;  /* 3.93:1 on --surface */
+  --chart-series-4: #8b5cf6;
+  --chart-series-5: #c93a3a;
+
+  /* ---------------------------------------------------------------------
+     TYPOGRAPHY — spec §48. System stack only; no CDN fonts (offline-first).
+     --------------------------------------------------------------------- */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  --font-numeric: var(--font-sans);
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Prose ramp — labels and supporting text. Deliberately restrained so the
+     numeric ramp below is the only thing that ever looks big. */
+  --text-2xs: 0.6875rem; /* 11px — ALL-CAPS section eyebrows only */
+  --text-xs: 0.75rem;    /* 12px — meta, timestamps */
+  --text-sm: 0.8125rem;  /* 13px — sub-labels under a stat */
+  --text-base: 0.9375rem;/* 15px — body */
+  --text-md: 1rem;       /* 16px — emphasised body, form inputs (no iOS zoom) */
+  --text-lg: 1.125rem;   /* 18px — card titles */
+  --text-xl: 1.25rem;    /* 20px — screen section headings */
+  --text-2xl: 1.5rem;    /* 24px — page titles */
+
+  /* NUMERIC DISPLAY RAMP — spec §50: numbers are the primary visual language.
+     Use these ONLY for figures ($742, 148%, $624/day). Never for prose.
+     Always apply .num / font-variant-numeric: tabular-nums alongside, so
+     digits do not jitter as a total ticks up. */
+  --num-xs: 1.0625rem;   /* 17px — inline figure in a list row */
+  --num-sm: 1.375rem;    /* 22px — StatTile in a dense strip */
+  --num-md: 1.75rem;     /* 28px — supporting metric */
+  --num-lg: 2.25rem;     /* 36px — secondary headline (Month / Year cards) */
+  --num-xl: 2.875rem;    /* 46px — screen-level headline */
+  --num-hero: clamp(3.5rem, 14vw, 4rem); /* 56–64px — the "$742" of §10 */
+
+  --leading-tight: 1.05;  /* numeric display */
+  --leading-snug: 1.25;   /* headings */
+  --leading-normal: 1.5;  /* body */
+  --tracking-tight: -0.022em; /* large numerals close up nicely */
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;    /* ALL-CAPS eyebrows */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---------------------------------------------------------------------
+     SPACING — 4px grid.
+     --------------------------------------------------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4  */
+  --space-2: 0.5rem;   /* 8  */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.25rem;  /* 20 */
+  --space-6: 1.5rem;   /* 24 */
+  --space-8: 2rem;     /* 32 */
+  --space-10: 2.5rem;  /* 40 */
+  --space-12: 3rem;    /* 48 */
+  --space-16: 4rem;    /* 64 */
+  --space-20: 5rem;    /* 80 */
+
+  /* ---------------------------------------------------------------------
+     RADII — spec §49, moderate corner radius.
+     --------------------------------------------------------------------- */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;   /* the card default */
+  --radius-xl: 20px;
+  --radius-2xl: 28px;  /* bottom sheet top corners */
+  --radius-full: 999px;
+
+  /* ---------------------------------------------------------------------
+     SHADOWS — spec §49, "very subtle". Cards get --shadow-sm and nothing more.
+     --------------------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgb(14 17 22 / 5%);
+  --shadow-sm: 0 1px 2px rgb(14 17 22 / 5%), 0 2px 8px rgb(14 17 22 / 4%);
+  --shadow-md: 0 4px 12px rgb(14 17 22 / 8%), 0 1px 3px rgb(14 17 22 / 5%);
+  --shadow-lg: 0 12px 32px rgb(14 17 22 / 14%), 0 2px 8px rgb(14 17 22 / 6%);
+  --shadow-fab: 0 6px 16px rgb(29 91 255 / 34%), 0 2px 4px rgb(14 17 22 / 10%);
+
+  /* ---------------------------------------------------------------------
+     LAYOUT — shared by AppShell and every screen.
+     --------------------------------------------------------------------- */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  --nav-height: 58px;                 /* bottom nav, excluding safe area */
+  --nav-total: calc(var(--nav-height) + var(--safe-bottom));
+  --fab-size: 56px;
+  --rail-width: 232px;                /* desktop left navigation rail */
+  --content-max: 1120px;              /* desktop max content width (§59) */
+  --content-pad: var(--space-4);      /* gutter on mobile */
+  --tap-min: 44px;                    /* accessibility floor (§63) */
+
+  /* Z-index ladder. Nothing should invent its own value. */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-nav: 40;
+  --z-fab: 45;
+  --z-scrim: 55;
+  --z-sheet: 60;
+  --z-toast: 70;
+  --z-celebration: 80;
+
+  /* ---------------------------------------------------------------------
+     MOTION — every duration must be overridable by prefers-reduced-motion,
+     which global.css handles by zeroing these three variables.
+     --------------------------------------------------------------------- */
+  --dur-instant: 80ms;
+  --dur-fast: 130ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* =========================================================================
+   DARK — system preference. Guarded so an explicit light choice still wins.
+   Spec §47: deep charcoal/navy ground, never pure black; graphite cards.
+   ========================================================================= */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --ground: #0b1220;
+    --surface: #141c2b;
+    --surface-elevated: #1b2434;
+    --surface-sunken: #0a101c;
+    --surface-hover: #1a2333;
+    --surface-active: #212c3f;
+    --scrim: rgb(3 7 14 / 62%);
+
+    --text-primary: #edf1f7;
+    --text-secondary: #9aa6b8;
+    --text-tertiary: #828fa3;
+    --text-inverse: #0b1220;
+    --text-disabled: #66738b;
+
+    --accent: #4d8bff;
+    --accent-hover: #6c9eff;
+    --accent-active: #7fabff;
+    --accent-weak: #16264a;
+    --accent-text: #85aeff;
+    --accent-on: #06122c;
+
+    --positive: #2fc98a;
+    --positive-weak: #0f2f24;
+    --positive-text: #52d6a0;
+    --positive-on: #04231a;
+
+    --warning: #e8a33d;
+    --warning-weak: #33260f;
+    --warning-text: #f0b862;
+    --warning-on: #241a05;
+
+    --negative: #ff6b6b;
+    --negative-weak: #351a1c;
+    --negative-text: #ff8e8e;
+    --negative-on: #2b0c0c;
+
+    --neutral: #8492a8;
+    --neutral-weak: #1a2333;
+    --neutral-text: #9aa6b8;
+
+    --border: #253046;
+    --border-strong: #33415c;
+    --divider: #1e2839;
+    --focus-ring: #6c9eff;
+    --focus-ring-offset: var(--ground);
+
+    --progress-track: #1e2839;
+    --progress-fill: var(--accent);
+    --progress-overflow: #2fc98a;
+
+    --chart-grid: #1e2839;
+    --chart-axis: #616e86;
+    --chart-series-1: #4d8bff;
+    --chart-series-2: #2fc98a;
+    --chart-series-3: #e8a33d;
+    --chart-series-4: #a78bfa;
+    --chart-series-5: #ff6b6b;
+
+    --shadow-xs: 0 1px 2px rgb(0 0 0 / 32%);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 32%), 0 2px 8px rgb(0 0 0 / 24%);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 40%), 0 1px 3px rgb(0 0 0 / 28%);
+    --shadow-lg: 0 16px 40px rgb(0 0 0 / 52%), 0 2px 8px rgb(0 0 0 / 32%);
+    --shadow-fab: 0 6px 18px rgb(0 0 0 / 50%), 0 0 0 1px rgb(77 139 255 / 22%);
+  }
+}
+
+/* =========================================================================
+   DARK — explicit user choice. Identical payload; wins in both directions
+   because it is not wrapped in a media query.
+   ========================================================================= */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ground: #0b1220;
+  --surface: #141c2b;
+  --surface-elevated: #1b2434;
+  --surface-sunken: #0a101c;
+  --surface-hover: #1a2333;
+  --surface-active: #212c3f;
+  --scrim: rgb(3 7 14 / 62%);
+
+  --text-primary: #edf1f7;
+  --text-secondary: #9aa6b8;
+  --text-tertiary: #828fa3;
+  --text-inverse: #0b1220;
+  --text-disabled: #66738b;
+
+  --accent: #4d8bff;
+  --accent-hover: #6c9eff;
+  --accent-active: #7fabff;
+  --accent-weak: #16264a;
+  --accent-text: #85aeff;
+  --accent-on: #06122c;
+
+  --positive: #2fc98a;
+  --positive-weak: #0f2f24;
+  --positive-text: #52d6a0;
+  --positive-on: #04231a;
+
+  --warning: #e8a33d;
+  --warning-weak: #33260f;
+  --warning-text: #f0b862;
+  --warning-on: #241a05;
+
+  --negative: #ff6b6b;
+  --negative-weak: #351a1c;
+  --negative-text: #ff8e8e;
+  --negative-on: #2b0c0c;
+
+  --neutral: #8492a8;
+  --neutral-weak: #1a2333;
+  --neutral-text: #9aa6b8;
+
+  --border: #253046;
+  --border-strong: #33415c;
+  --divider: #1e2839;
+  --focus-ring: #6c9eff;
+  --focus-ring-offset: var(--ground);
+
+  --progress-track: #1e2839;
+  --progress-fill: var(--accent);
+  --progress-overflow: #2fc98a;
+
+  --chart-grid: #1e2839;
+  --chart-axis: #616e86;
+  --chart-series-1: #4d8bff;
+  --chart-series-2: #2fc98a;
+  --chart-series-3: #e8a33d;
+  --chart-series-4: #a78bfa;
+  --chart-series-5: #ff6b6b;
+
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 32%);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 32%), 0 2px 8px rgb(0 0 0 / 24%);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 40%), 0 1px 3px rgb(0 0 0 / 28%);
+  --shadow-lg: 0 16px 40px rgb(0 0 0 / 52%), 0 2px 8px rgb(0 0 0 / 32%);
+  --shadow-fab: 0 6px 18px rgb(0 0 0 / 50%), 0 0 0 1px rgb(77 139 255 / 22%);
+}
+
+/* Explicit light. Present so the toggle wins over a dark system preference;
+   the values are inherited from :root, so this block only pins color-scheme. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Desktop gutters widen; the rail claims the left edge (§59). */
+@media (min-width: 900px) {
+  :root {
+    --content-pad: var(--space-8);
+  }
+}

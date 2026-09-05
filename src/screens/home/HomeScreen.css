@@ -1,0 +1,283 @@
+/* =========================================================================
+   Home — spec §9–13, §54. Owned by the Home team.
+   Tokens only: no literal colour, radius, shadow or font size lives here.
+   ========================================================================= */
+
+.home__split {
+  align-items: start;
+}
+
+/* .home carries .pad-for-nav so the screen clears the bar and the FAB on its
+   own. The shell already applies the same class to its content wrapper, so
+   collapse ours when it is nested there rather than reserving the room twice. */
+.shell__content.pad-for-nav > .home.pad-for-nav {
+  padding-bottom: 0;
+}
+
+/* On desktop the ledger column should not tower over the metrics column. */
+@media (min-width: 900px) {
+  .home__secondary {
+    position: sticky;
+    top: var(--space-6);
+  }
+}
+
+/* ------------------------------------------------- today's score card (§10) */
+
+.score {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.score__hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.score__percent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--num-md);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  padding-bottom: var(--space-1);
+  margin: 0;
+}
+
+.score__percent-glyph {
+  flex: none;
+}
+
+.score__percent--positive {
+  color: var(--positive-text);
+}
+
+.score__percent--warning {
+  color: var(--warning-text);
+}
+
+.score__percent--accent {
+  color: var(--accent-text);
+}
+
+.score__percent--neutral {
+  color: var(--neutral-text);
+}
+
+.score__stats {
+  border-top: 1px solid var(--divider);
+  padding-top: var(--space-4);
+}
+
+/* ------------------------------------------- quick performance strip (§11) */
+
+.quick-strip__card {
+  width: 100%;
+  text-align: left;
+}
+
+/* -------------------------------------------------------- pace card (§12) */
+
+.pace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pace__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.pace__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+.pace__status-glyph {
+  flex: none;
+}
+
+.pace__status--positive {
+  background: var(--positive-weak);
+  color: var(--positive-text);
+}
+
+.pace__status--warning {
+  background: var(--warning-weak);
+  color: var(--warning-text);
+}
+
+.pace__status--accent {
+  background: var(--accent-weak);
+  color: var(--accent-text);
+}
+
+.pace__status--neutral {
+  background: var(--neutral-weak);
+  color: var(--neutral-text);
+}
+
+.pace__sub {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.pace__figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--divider);
+}
+
+.pace__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.pace__figure-value {
+  margin: 0;
+  font-size: var(--num-xs);
+  color: var(--text-primary);
+}
+
+.pace__note {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.pace__quiet-line {
+  margin: 0;
+  font-size: var(--num-md);
+}
+
+.pace__quiet-unit {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-secondary);
+}
+
+/* ------------------------------------------------ today's sales list (§13) */
+
+.today-list__count {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.today-list__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.sale-row {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.sale-row + .sale-row {
+  border-top: 1px solid var(--divider);
+}
+
+.sale-row__slider {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  will-change: transform;
+}
+
+.sale-row__main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  text-align: left;
+  transition: background-color var(--dur-fast) var(--ease-standard);
+}
+
+.sale-row__main:hover {
+  background: var(--surface-hover);
+}
+
+.sale-row__main:active {
+  background: var(--surface-active);
+}
+
+.sale-row__time {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-tertiary);
+  min-width: 62px;
+}
+
+.sale-row__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sale-row__tag {
+  flex: none;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--negative-weak);
+  color: var(--negative-text);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.sale-row__amount {
+  font-size: var(--num-xs);
+  color: var(--text-primary);
+}
+
+.sale-row__amount--struck {
+  color: var(--text-tertiary);
+  text-decoration: line-through;
+}
+
+.sale-row__actions {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-right: var(--space-2);
+}

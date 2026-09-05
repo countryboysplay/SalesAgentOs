@@ -1,0 +1,79 @@
+/* SegmentedControl — the 7D/30D/90D/Year/All range picker (§56) and the
+   Day/Month/Year/All ledger tabs (§19). One control, two jobs. */
+
+.segmented {
+  display: inline-flex;
+  width: 100%;
+  padding: 3px;
+  gap: 2px;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.segmented__option {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 var(--space-2);
+  border-radius: calc(var(--radius-md) - 3px);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  background: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+/* The strip is 44px tall overall (38 + 3 + 3), but the 3px of track padding
+   above and below each segment was dead space that swallowed taps. The
+   pseudo-element hands those 6px to the button's hit box, so the real target
+   is the full 44px while the pill still reads as 38px (§63). */
+.segmented__option::after {
+  content: '';
+  position: absolute;
+  inset: -3px 0;
+}
+
+.segmented--lg .segmented__option::after {
+  inset: calc((42px - var(--tap-min)) / 2) 0;
+}
+
+.segmented__option[aria-selected='true'],
+.segmented__option[aria-checked='true'] {
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+@media (hover: hover) {
+  .segmented__option:hover:not([aria-selected='true']):not([aria-checked='true']) {
+    color: var(--text-primary);
+  }
+}
+
+.segmented__option:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.segmented--lg .segmented__option {
+  min-height: 42px;
+  font-size: var(--text-md);
+}
+
+/* Auto width — for a control that should hug its labels rather than fill. */
+.segmented--auto {
+  width: auto;
+}
+
+.segmented--auto .segmented__option {
+  flex: 0 0 auto;
+  padding: 0 var(--space-4);
+}

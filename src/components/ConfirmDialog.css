@@ -1,0 +1,106 @@
+/* ConfirmDialog — delete confirmation (§13) and the type-the-word variant
+   for Reset App (§44). Centred on every viewport, unlike Sheet. */
+
+.confirm-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scrim);
+  background: var(--scrim);
+  animation: confirm-fade var(--dur-fast) var(--ease-standard);
+}
+
+@keyframes confirm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.confirm {
+  position: fixed;
+  z-index: var(--z-sheet);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(420px, calc(100vw - var(--space-8)));
+  max-height: calc(100dvh - var(--space-12));
+  overflow-y: auto;
+  padding: var(--space-6);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  outline: none;
+  animation: confirm-pop var(--dur-base) var(--ease-out);
+}
+
+@keyframes confirm-pop {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.confirm__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+  line-height: var(--leading-snug);
+  margin: 0 0 var(--space-2);
+}
+
+.confirm__body {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+.confirm__body strong { color: var(--text-primary); font-weight: var(--weight-semibold); }
+
+.confirm__field {
+  margin-top: var(--space-5);
+}
+
+.confirm__label {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.confirm__label code {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  padding: 1px 5px;
+  border-radius: var(--radius-xs);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+.confirm__input {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+.confirm__input:focus-visible {
+  border-color: var(--accent);
+  outline-offset: 1px;
+}
+
+.confirm__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.confirm__actions > * { flex: 1 1 0; }
+
+/* Stack on very narrow screens so neither label truncates. */
+@media (max-width: 360px) {
+  .confirm__actions { flex-direction: column-reverse; }
+}

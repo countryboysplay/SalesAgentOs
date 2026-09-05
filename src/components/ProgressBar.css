@@ -1,0 +1,101 @@
+/* ProgressBar — spec §51.
+   Horizontal bars are the primary goal visualisation. Progress past 100%
+   must stay meaningful rather than clipping, so above 100% the track
+   rescales: the goal line slides left and the surplus paints beyond it. */
+
+.progress {
+  display: block;
+  width: 100%;
+}
+
+.progress__track {
+  position: relative;
+  width: 100%;
+  background: var(--progress-track);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  display: flex;
+}
+
+.progress--sm .progress__track { height: 6px; }
+.progress--md .progress__track { height: 10px; }
+.progress--lg .progress__track { height: 14px; }
+
+.progress__fill {
+  height: 100%;
+  background: var(--progress-fill);
+  border-radius: var(--radius-full);
+  transition: width var(--dur-slow) var(--ease-out);
+  min-width: 0;
+}
+
+/* Surplus past 100%. A different hue AND a different position, so the fact
+   that the goal is beaten is never carried by colour alone — the numeric
+   label beside the bar always says "124%" too (§63). */
+.progress__overflow {
+  height: 100%;
+  background: var(--progress-overflow);
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  transition: width var(--dur-slow) var(--ease-out);
+  position: relative;
+}
+
+/* Hairline where the goal sits once it has been passed. */
+.progress--over .progress__overflow::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 2px;
+  background: var(--surface);
+}
+
+.progress--tone-positive .progress__fill { background: var(--positive); }
+.progress--tone-warning  .progress__fill { background: var(--warning); }
+.progress--tone-negative .progress__fill { background: var(--negative); }
+.progress--tone-neutral  .progress__fill { background: var(--neutral); }
+
+/* Expected-by-today marker (§12 pace, §23 month progress). */
+.progress__marker {
+  position: absolute;
+  inset-block: -2px;
+  width: 2px;
+  background: var(--text-primary);
+  /* 0.42 composited to only 2.7:1 against the track. 0.62 clears the 3:1
+     non-text bar (1.4.11) in both themes. */
+  opacity: 0.62;
+  border-radius: 1px;
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------- label row */
+
+.progress__labels {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.progress__caption {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.progress__value {
+  font-size: var(--num-xs);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.progress--over .progress__value { color: var(--positive-text); }
+
+.progress__footnote {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}

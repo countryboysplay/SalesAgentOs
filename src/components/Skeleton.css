@@ -1,0 +1,47 @@
+/* Skeleton — for the first hydrate ONLY.
+   Spec §64: there is no artificial loading state for local reads. After the
+   store has hydrated, everything is in memory and renders synchronously.
+   If you find yourself reaching for this on a screen, you probably want the
+   real data instead. */
+
+.skeleton {
+  display: block;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--surface) 60%, transparent) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  to { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; }
+}
+
+:root[data-reduced-motion='true'] .skeleton::after { animation: none; }
+
+.skeleton--text { border-radius: var(--radius-xs); }
+.skeleton--circle { border-radius: var(--radius-full); }
+.skeleton--card { border-radius: var(--radius-lg); }
+
+.skeleton-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

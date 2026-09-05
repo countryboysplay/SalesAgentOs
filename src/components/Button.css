@@ -1,0 +1,170 @@
+/* Button — 44px minimum target on every size except 'sm', which is reserved
+   for controls that already sit inside a 44px row. Spec §63. */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-instant) var(--ease-standard);
+  user-select: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.975);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------- sizes */
+
+.btn--sm {
+  min-height: 34px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-sm);
+  gap: var(--space-1);
+}
+
+.btn--md {
+  min-height: var(--tap-min);
+}
+
+.btn--lg {
+  min-height: 54px;
+  padding: 0 var(--space-6);
+  font-size: var(--text-lg);
+  border-radius: var(--radius-lg);
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------- variants */
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled) { background: var(--accent-hover); }
+}
+.btn--primary:active:not(:disabled) { background: var(--accent-active); }
+
+.btn--secondary {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+@media (hover: hover) {
+  .btn--secondary:hover:not(:disabled) { background: var(--surface-hover); }
+}
+.btn--secondary:active:not(:disabled) { background: var(--surface-active); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+@media (hover: hover) {
+  .btn--ghost:hover:not(:disabled) {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+}
+.btn--ghost:active:not(:disabled) { background: var(--surface-active); }
+
+.btn--danger {
+  background: var(--negative);
+  color: var(--negative-on);
+}
+
+@media (hover: hover) {
+  .btn--danger:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--negative) 86%, black);
+  }
+}
+
+/* Destructive but not the primary action of the screen. */
+.btn--danger-quiet {
+  background: var(--negative-weak);
+  color: var(--negative-text);
+  border-color: color-mix(in srgb, var(--negative) 28%, transparent);
+}
+
+/* ------------------------------------------------------------------ bits */
+
+.btn__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 1.125em;
+  height: 1.125em;
+}
+
+.btn__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  animation: btn-spin 700ms linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Target-size floor (§63 / WCAG 2.5.5). 'sm' renders 34px tall so it fits a
+   dense row, but a 34px hit box is under the floor and these buttons are
+   frequently the only control in their row (Edit, Delete, Change, Done).
+   The pseudo-element extends the POINTER/TOUCH target to 44px without moving
+   a single pixel of the visual design. It is inert to layout and to AT. */
+.btn--sm {
+  position: relative;
+}
+
+.btn--sm::after {
+  content: '';
+  position: absolute;
+  inset: calc((34px - var(--tap-min)) / 2) 0;
+  border-radius: inherit;
+}
+
+/* Icon-only: square, still 44px. Requires an ariaLabel. */
+.btn--icon-only {
+  padding: 0;
+  width: var(--tap-min);
+  min-width: var(--tap-min);
+}
+
+.btn--sm.btn--icon-only {
+  width: 34px;
+  min-width: 34px;
+}
+
+/* Icon-only 'sm' is 34px square, so the target has to grow on both axes. */
+.btn--sm.btn--icon-only::after {
+  inset: calc((34px - var(--tap-min)) / 2);
+}

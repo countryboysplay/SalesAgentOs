@@ -1,0 +1,263 @@
+/* =========================================================================
+   SalesTrack — Global reset + base layer.
+   Owner: Design System. Import order matters: tokens.css first, always.
+   ========================================================================= */
+
+@import "./tokens.css";
+
+/* ------------------------------------------------------------------ reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Keeps the viewport from bouncing behind the fixed bottom nav on iOS. */
+  overscroll-behavior-y: none;
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd, ol, ul {
+  margin: 0;
+}
+
+ol, ul {
+  padding: 0;
+  list-style: none;
+}
+
+body {
+  min-height: 100dvh;
+  /* Explicit token background — nothing behind the app may show through. */
+  background-color: var(--ground);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Sales figures must never render as proportional digits. */
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--dur-base) var(--ease-standard),
+    color var(--dur-base) var(--ease-standard);
+}
+
+#root {
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+svg {
+  fill: currentColor;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  /* Removes the 300ms tap delay and the grey flash on mobile Safari/Chrome. */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: var(--accent-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Inputs at 16px or larger stop iOS Safari from zooming the viewport on
+   focus. Never set a form control below --text-md. */
+input, textarea, select {
+  font-size: var(--text-md);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--divider);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ focus */
+/* Visible focus for keyboard users on every interactive element (§63).
+   :focus-visible only, so a pointer press never paints a ring. */
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset-width);
+  border-radius: var(--radius-xs);
+}
+
+/* Elements that sit flush against an edge cannot afford an outward offset. */
+.focus-inset:focus-visible {
+  outline-offset: calc(-1 * var(--focus-ring-width));
+}
+
+::selection {
+  background: var(--accent-weak);
+  color: var(--text-primary);
+}
+
+/* ------------------------------------------------- typography utilities */
+
+/* Numeric display. Apply to EVERY figure so digit widths stay locked and a
+   total ticking from $999 to $1,004 does not shift the layout. */
+.num {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-bold);
+}
+
+/* ALL-CAPS eyebrow above a metric: "TODAY", "MONTHLY PACE". */
+.eyebrow {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+}
+
+/* Screen-reader-only text. Used everywhere a colour carries meaning, so the
+   meaning also exists as words (§63). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link — first tabbable node in the shell. */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-200%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------- scroll locking */
+/* Sheet.tsx and ConfirmDialog.tsx add this to <body> while open. Position
+   fixed (rather than overflow:hidden) is the only reliable lock on iOS. */
+
+body.is-scroll-locked {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------- safe-area helpers */
+
+.safe-bottom {
+  padding-bottom: var(--safe-bottom);
+}
+
+/* Any scrolling region that sits above the fixed bottom nav must reserve
+   room for the nav AND the FAB, or the last row is unreachable. */
+.pad-for-nav {
+  padding-bottom: calc(var(--nav-total) + var(--fab-size) + var(--space-6));
+}
+
+@media (min-width: 900px) {
+  .pad-for-nav {
+    padding-bottom: var(--space-12);
+  }
+}
+
+/* --------------------------------------------------------- reduced motion */
+/* Spec §63. Zeroing the duration tokens neutralises every component at once,
+   including any transition a screen team writes against them. */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0.01ms;
+    --dur-fast: 0.01ms;
+    --dur-base: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* The Settings > Appearance screen can force the same behaviour regardless of
+   the OS preference by setting data-reduced-motion="true" on <html>
+   (Settings.reducedMotion === true). */
+:root[data-reduced-motion="true"] {
+  --dur-instant: 0.01ms;
+  --dur-fast: 0.01ms;
+  --dur-base: 0.01ms;
+  --dur-slow: 0.01ms;
+}
+
+:root[data-reduced-motion="true"] *,
+:root[data-reduced-motion="true"] *::before,
+:root[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ------------------------------------------------------------- print */
+
+@media print {
+  .app-nav,
+  .app-fab,
+  .toast-viewport {
+    display: none !important;
+  }
+}

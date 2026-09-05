@@ -1,0 +1,247 @@
+/* AppShell — §6 navigation, §58 mobile-first, §59 desktop rail.
+   Same information architecture in both; the container changes, not the app. */
+
+.shell {
+  min-height: 100dvh;
+  background: var(--ground);
+}
+
+.shell__main {
+  width: 100%;
+  padding-inline: max(var(--content-pad), var(--safe-left));
+  padding-top: max(var(--space-2), var(--safe-top));
+}
+
+.shell__content {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+/* =========================================================================
+   MOBILE (< 900px): bottom nav + floating + Sale
+   ========================================================================= */
+
+.shell__rail { display: none; }
+
+.shell__nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(180%) blur(16px);
+  border-top: 1px solid var(--border);
+  padding-bottom: var(--safe-bottom);
+  padding-inline: max(0px, var(--safe-left)) max(0px, var(--safe-right));
+}
+
+/* Backdrop-filter is unsupported or disabled: fall back to an opaque bar so
+   content never bleeds through the nav. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .shell__nav { background: var(--surface); }
+}
+
+.shell__nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: var(--nav-height);
+  padding: var(--space-1) var(--space-1) 0;
+  color: var(--text-tertiary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.shell__nav-item:hover { text-decoration: none; }
+
+/* Active state carries three signals: colour, weight, and aria-current (§63). */
+.shell__nav-item[aria-current='page'] {
+  color: var(--accent);
+  font-weight: var(--weight-semibold);
+}
+
+.shell__nav-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* The + Sale button. Thumb-reachable, above the nav, on every screen (§6). */
+.shell__fab {
+  position: fixed;
+  z-index: var(--z-fab);
+  right: max(var(--space-4), var(--safe-right));
+  bottom: calc(var(--nav-total) + var(--space-4));
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--fab-size);
+  padding: 0 var(--space-5) 0 var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--accent-on);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-fab);
+  transition:
+    transform var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .shell__fab:hover { background: var(--accent-hover); }
+}
+
+.shell__fab:active { transform: scale(0.95); }
+
+.shell__fab-plus {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* =========================================================================
+   DESKTOP (>= 900px): left rail, no bottom nav, no floating button.
+   The + Sale action moves INTO the rail as its primary item, so it is still
+   the most prominent control on the screen (§59).
+   ========================================================================= */
+
+@media (min-width: 900px) {
+  .shell {
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  }
+
+  /* Chromeless (onboarding): no rail, so the single .shell__main child should
+     take the full width instead of auto-placing into the rail's narrow
+     first track. */
+  .shell--chromeless {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shell__nav,
+  .shell__fab {
+    display: none;
+  }
+
+  .shell__rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100dvh;
+    padding: var(--space-6) var(--space-3);
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    overflow-y: auto;
+  }
+
+  .shell__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3) var(--space-5);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .shell__brand-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .shell__rail-cta {
+    margin-bottom: var(--space-5);
+  }
+
+  .shell__rail-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--tap-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: var(--text-md);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    transition:
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard);
+  }
+
+  .shell__rail-item:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .shell__rail-item[aria-current='page'] {
+    background: var(--accent-weak);
+    color: var(--accent-text);
+    font-weight: var(--weight-semibold);
+  }
+
+  .shell__rail-spacer { flex: 1 1 auto; }
+
+  .shell__rail-footer {
+    padding: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    line-height: var(--leading-snug);
+  }
+
+  .shell__main {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-12);
+  }
+}
+
+/* =========================================================================
+   Shared layout helpers screens can use for the desktop multi-column
+   arrangement (§59: multiple metric cards in a row, list beside metrics).
+   ========================================================================= */
+
+.shell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* One column on mobile; a 2fr / 1fr split once there is room. */
+.shell-split {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .shell-stack { gap: var(--space-5); }
+  .shell-split {
+    gap: var(--space-5);
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+
+/* Auto-fitting metric card row: 1 up on a phone, 2–4 up as width allows. */
+.shell-metrics {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+}

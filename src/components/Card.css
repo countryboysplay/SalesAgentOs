@@ -1,0 +1,89 @@
+/* Card — spec §49. Moderate radius, minimal border, very subtle shadow,
+   generous internal spacing, almost no decorative chrome. */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-primary);
+  position: relative;
+}
+
+.card--pad-none { padding: 0; }
+.card--pad-sm { padding: var(--space-4); }
+.card--pad-md { padding: var(--space-5); }
+.card--pad-lg { padding: var(--space-6); }
+
+/* Flat: no shadow. For cards nested inside another card, or dense lists. */
+.card--flat {
+  box-shadow: none;
+  background: var(--surface);
+}
+
+/* Sunken: an inert well. Never use for tappable content. */
+.card--sunken {
+  background: var(--surface-sunken);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Accent: the hero card on Home. One per screen, maximum. */
+.card--accent {
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--border));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 5%, var(--surface)) 0%,
+      var(--surface) 62%
+    );
+}
+
+/* Status tints — always accompanied by a word in the card body (§63). */
+.card--positive { border-color: color-mix(in srgb, var(--positive) 30%, var(--border)); }
+.card--warning  { border-color: color-mix(in srgb, var(--warning) 34%, var(--border)); }
+.card--negative { border-color: color-mix(in srgb, var(--negative) 30%, var(--border)); }
+
+/* Interactive card — renders as a <button>. */
+.card--interactive {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .card--interactive:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
+  }
+}
+
+.card--interactive:active {
+  transform: scale(0.99);
+  background: var(--surface-active);
+}
+
+/* Optional header row inside a card. */
+.card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.card__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: -0.01em;
+}
+
+.card__action {
+  flex-shrink: 0;
+}

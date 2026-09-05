@@ -1,0 +1,198 @@
+/* Insights screen — §26-31, §56.
+   Tokens only: no hex, no raw px type sizes, so both themes come free. */
+
+.insights {
+  width: 100%;
+}
+
+/* The time selector is sticky-adjacent in importance: it drives three of the
+   five cards, so it sits directly under the title with room to breathe. */
+.insights__range {
+  margin-top: calc(var(--space-1) * -1);
+}
+
+/* Card header scope chip — "Last 30 days", "All time", "Month and year".
+   Every card states which window it is describing, so the range selector can
+   never be silently misread as governing Pace or Records. */
+.insights__scope {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.insights__headline {
+  margin-bottom: var(--space-4);
+}
+
+.insights__metrics {
+  margin-top: var(--space-2);
+}
+
+.insights__toggle {
+  margin-bottom: var(--space-4);
+}
+
+.insights__note {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+}
+
+/* Three metrics across once there is room; two on a phone (§58, §59).
+   StatGrid writes --stat-grid-cols as an inline style, which no stylesheet can
+   override, so this wins on specificity instead. */
+@media (min-width: 560px) {
+  .stat-grid.insights__metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ------------------------------------------------------------------- pace */
+
+.pace {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.pace__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+.pace__figure {
+  margin: 0;
+  font-size: var(--num-md);
+  color: var(--text-primary);
+}
+
+/* Status = glyph + words. The colour is the third signal, never the first. */
+.pace__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.pace__status--positive { color: var(--positive-text); }
+.pace__status--warning  { color: var(--warning-text); }
+.pace__status--accent   { color: var(--accent-text); }
+.pace__status--neutral  { color: var(--text-secondary); }
+
+.pace__block .btn,
+.pace__block button {
+  margin-top: var(--space-1);
+}
+
+@media (min-width: 720px) {
+  .pace {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-6);
+  }
+}
+
+/* ----------------------------------------------------------------- streak */
+
+.streak {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--divider);
+}
+
+.streak__head {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-1);
+  color: var(--text-tertiary);
+}
+
+.streak__value {
+  margin: 0;
+  font-size: var(--num-md);
+  color: var(--text-primary);
+}
+
+.streak__sub {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+
+/* ------------------------------------------------------------- categories */
+
+.cats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cats__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cats__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.cats__rank {
+  min-width: 1.25em;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary);
+}
+
+.cats__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.cats__figure {
+  flex: 0 0 auto;
+  font-size: var(--num-xs);
+  color: var(--text-primary);
+}
+
+/* Bar: zero baseline, length-encoded, one hue. The row's own text carries the
+   numbers, so the bar only has to make the ranking scannable. */
+.cats__track {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.cats__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--chart-series-1);
+  transition: width var(--dur-base) var(--ease-out);
+}
+
+.cats__meta {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}

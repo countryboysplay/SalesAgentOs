@@ -1,0 +1,74 @@
+/* Celebration — spec §53. Subtle. A short confetti burst for a goal reached
+   or a personal record, and NOTHING for an ordinary sale. */
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-celebration);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.celebration__piece {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: confetti-fly var(--confetti-duration, 1100ms) var(--ease-out) forwards;
+  animation-delay: var(--confetti-delay, 0ms);
+}
+
+.celebration__piece:nth-child(3n) { border-radius: var(--radius-full); }
+.celebration__piece:nth-child(4n) { width: 5px; height: 11px; }
+
+@keyframes confetti-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.6);
+  }
+  12% { opacity: 1; }
+  70% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform:
+      translate(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-y)))
+      rotate(var(--confetti-rot))
+      scale(1);
+  }
+}
+
+/* Reduced motion: no flying pieces at all. A brief, still ring pulse marks
+   the moment instead — the achievement text on the screen carries the news. */
+.celebration--reduced .celebration__piece { display: none; }
+
+.celebration__pulse {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--positive);
+  opacity: 0;
+  animation: celebration-pulse 900ms var(--ease-out) forwards;
+}
+
+@keyframes celebration-pulse {
+  0% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+
+/* Reduced motion must REMOVE the burst, not shorten it (§63). Both the OS
+   preference and the in-app Settings.reducedMotion switch are honoured. */
+@media (prefers-reduced-motion: reduce) {
+  .celebration__piece { display: none; }
+  .celebration__pulse { animation: none; opacity: 0; }
+}
+
+:root[data-reduced-motion='true'] .celebration__piece { display: none; }
+:root[data-reduced-motion='true'] .celebration__pulse { animation: none; opacity: 0; }

@@ -1,0 +1,131 @@
+/* Toast — brief confirmation with an optional Undo (§70).
+   Sits above the bottom nav on mobile so it never covers the nav or the FAB. */
+
+.toast-viewport {
+  position: fixed;
+  z-index: var(--z-toast);
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: calc(var(--nav-total) + var(--fab-size) + var(--space-4));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+
+@media (min-width: 900px) {
+  .toast-viewport {
+    left: auto;
+    right: var(--space-6);
+    bottom: var(--space-6);
+    width: min(400px, calc(100vw - var(--space-12)));
+  }
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  min-height: var(--tap-min);
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  animation: toast-in var(--dur-base) var(--ease-out);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.toast--leaving {
+  animation: toast-out var(--dur-fast) var(--ease-in) forwards;
+}
+
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+/* Status accent is a 3px left rule, paired with an icon and the message text
+   itself — never colour alone (§63). */
+.toast__rail {
+  width: 3px;
+  align-self: stretch;
+  border-radius: var(--radius-full);
+  background: var(--neutral);
+  flex-shrink: 0;
+  margin: calc(-1 * var(--space-1)) 0;
+}
+
+.toast--success .toast__rail { background: var(--positive); }
+.toast--warning .toast__rail { background: var(--warning); }
+.toast--error .toast__rail { background: var(--negative); }
+
+.toast__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.toast__message {
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+.toast__detail {
+  margin-top: 2px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* The Undo slot. Deliberately prominent — this is the safety net after a
+   cancel or delete. */
+.toast__action {
+  position: relative;
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--accent-text);
+  background: transparent;
+}
+
+/* Undo is the safety net after a delete — its hit box must clear 44px even
+   though the pill itself stays 36px so the toast keeps its height (§63). */
+.toast__action::after,
+.toast__dismiss::after {
+  content: '';
+  position: absolute;
+  inset: calc((36px - var(--tap-min)) / 2) 0;
+}
+
+@media (hover: hover) {
+  .toast__action:hover { background: var(--accent-weak); }
+}
+
+.toast__dismiss {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+.toast__dismiss::after {
+  inset: calc((36px - var(--tap-min)) / 2);
+}
+
+@media (hover: hover) {
+  .toast__dismiss:hover { background: var(--surface-hover); color: var(--text-primary); }
+}

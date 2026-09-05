@@ -1,0 +1,157 @@
+/* Sheet — bottom sheet on mobile (§14 Add Sale), centred modal on desktop
+   (§59: same information architecture, adapted container). */
+
+.sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scrim);
+  background: var(--scrim);
+  animation: sheet-scrim-in var(--dur-base) var(--ease-standard);
+}
+
+@keyframes sheet-scrim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sheet {
+  position: fixed;
+  z-index: var(--z-sheet);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  outline: none;
+}
+
+/* ------------------------------------------------------------ mobile: bottom */
+
+@media (max-width: 899px) {
+  .sheet {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: min(92dvh, 900px);
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    padding-bottom: var(--safe-bottom);
+    animation: sheet-up var(--dur-slow) var(--ease-out);
+  }
+
+  .sheet--full {
+    top: 0;
+    max-height: 100dvh;
+    border-radius: 0;
+    padding-top: var(--safe-top);
+  }
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------ desktop: modal */
+
+@media (min-width: 900px) {
+  .sheet {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(560px, calc(100vw - var(--space-12)));
+    max-height: min(86dvh, 860px);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    animation: sheet-pop var(--dur-base) var(--ease-out);
+  }
+
+  .sheet--wide { width: min(760px, calc(100vw - var(--space-12))); }
+  .sheet__grabber { display: none; }
+}
+
+@keyframes sheet-pop {
+  from { transform: translate(-50%, -46%) scale(0.98); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ------------------------------------------------------------------ parts */
+
+/* Drag handle. Also the drag-to-dismiss grab area on touch devices. */
+.sheet__grabber {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-3) 0 var(--space-1);
+  touch-action: none;
+  cursor: grab;
+}
+
+.sheet__grabber::before {
+  content: '';
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--border-strong);
+}
+
+.sheet__header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-2);
+}
+
+.sheet__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+  line-height: var(--leading-snug);
+  margin: 0;
+}
+
+.sheet__description {
+  padding: 0 var(--space-5);
+  margin-bottom: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+}
+
+.sheet__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  margin-right: calc(-1 * var(--space-2));
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+}
+
+@media (hover: hover) {
+  .sheet__close:hover { background: var(--surface-hover); color: var(--text-primary); }
+}
+
+.sheet__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-5) var(--space-5);
+}
+
+.sheet__body--flush { padding-inline: 0; }
+
+/* Sticky action bar at the foot of a sheet — "RECORD SALE" lives here. */
+.sheet__footer {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--divider);
+  background: var(--surface-elevated);
+}
+
+.sheet__footer > * { flex: 1 1 auto; }

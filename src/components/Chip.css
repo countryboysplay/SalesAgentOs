@@ -1,0 +1,92 @@
+/* Chip — selectable quick-pick, primarily the category chips in Add Sale
+   (§14). Tall enough to hit one-handed. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .chip:hover:not(:disabled) {
+    background: var(--surface-active);
+    color: var(--text-primary);
+  }
+}
+
+.chip:active:not(:disabled) { transform: scale(0.97); }
+
+/* Selected: tinted fill AND a leading check glyph, so selection is not
+   communicated by colour alone (§63). aria-pressed carries it for AT. */
+.chip[aria-pressed='true'],
+.chip--selected {
+  background: var(--accent-weak);
+  color: var(--accent-text);
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  font-weight: var(--weight-semibold);
+}
+
+.chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.chip__icon {
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.chip__check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.chip--sm {
+  min-height: 34px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  position: relative;
+}
+
+/* Same 44px target extension as .btn--sm — visual size unchanged (§63). */
+.chip--sm::after {
+  content: '';
+  position: absolute;
+  inset: calc((34px - var(--tap-min)) / 2) 0;
+  border-radius: inherit;
+}
+
+/* Horizontal chip rail. Scrolls rather than wrapping, so the Add Sale sheet
+   keeps a fixed height while the keypad is open. */
+.chip-row {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-1) 0;
+  margin: 0 calc(-1 * var(--space-1));
+  padding-inline: var(--space-1);
+}
+
+.chip-row::-webkit-scrollbar { display: none; }
+
+.chip-row--wrap {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}

@@ -1,0 +1,75 @@
+/* PageHeader — the top of every primary screen. Small, quiet, and out of the
+   way, because the numbers below it are the point (§48). */
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-5);
+}
+
+.page-header__main {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.page-header__back {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  margin-left: calc(-1 * var(--space-3));
+  margin-top: calc(-1 * var(--space-2));
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+}
+
+@media (hover: hover) {
+  .page-header__back:hover { background: var(--surface-hover); color: var(--text-primary); }
+}
+
+.page-header__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--leading-snug);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.page-header__subtitle {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* "Saved on this device" — the only status line in the product (§9, §62). */
+.page-header__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.page-header__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--positive);
+  flex-shrink: 0;
+}
+
+.page-header__actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

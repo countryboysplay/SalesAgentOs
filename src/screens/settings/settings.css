@@ -1,0 +1,710 @@
+/* =========================================================================
+   Settings — screen-local styles.
+
+   Owned by the Settings team. Every value here is a token from
+   src/styles/tokens.css: no hex, no raw radius, no raw font size. Anything
+   that looks like a reusable primitive belongs in @/components instead, and
+   is requested from the Design System owner rather than grown here.
+   ========================================================================= */
+
+/* ------------------------------------------------------------------ prose */
+
+/* Explanatory line under a control. Secondary, not tertiary: these sentences
+   carry meaning (what a setting does, what happens to history) and tertiary
+   is reserved for labels and metadata. */
+.set-note {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.set-note + .set-note {
+  margin-top: var(--space-2);
+}
+
+.set-note--quiet {
+  color: var(--text-tertiary);
+  font-size: var(--text-xs);
+}
+
+.set-note strong {
+  color: var(--text-primary);
+  font-weight: var(--weight-semibold);
+}
+
+/* ------------------------------------------------------- index nav rows */
+
+.set-nav {
+  display: flex;
+  flex-direction: column;
+  /* Clip row hovers to the card's corners. Rows carry .focus-inset so the
+     focus ring is drawn inside and survives the clip. */
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.set-nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: var(--space-3) var(--space-5);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--divider);
+  transition: background-color var(--dur-fast) var(--ease-standard);
+}
+
+.set-nav__item:last-child {
+  border-bottom: 0;
+}
+
+.set-nav__item:hover {
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .set-nav__item:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.set-nav__item:active {
+  background: var(--surface-active);
+}
+
+.set-nav__glyph {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.set-nav__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.set-nav__title {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.set-nav__sub {
+  margin-top: 1px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.set-nav__chevron {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+/* ------------------------------------------------------------------ rows */
+
+/* Label on the left, control on the right. Never shorter than a touch
+   target, even when the control itself is smaller. */
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--tap-min);
+  padding: var(--space-3) 0;
+}
+
+.set-row + .set-row {
+  border-top: 1px solid var(--divider);
+}
+
+.set-row__text {
+  min-width: 0;
+}
+
+.set-row__label {
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+.set-row__sub {
+  margin-top: 2px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.set-row__control {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Key/value read-out, as used by Local Storage (§42). */
+.set-kv {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+}
+
+.set-kv + .set-kv {
+  border-top: 1px solid var(--divider);
+}
+
+.set-kv__key {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.set-kv__value {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  text-align: right;
+}
+
+/* ---------------------------------------------------------------- fields */
+
+.set-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.set-field__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.set-inputwrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+.set-inputwrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.set-inputwrap--invalid {
+  border-color: var(--negative);
+}
+
+.set-inputwrap--invalid:focus-within {
+  box-shadow: 0 0 0 1px var(--negative);
+}
+
+.set-inputwrap__affix {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+}
+
+.set-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: var(--tap-min);
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--text-md);
+}
+
+.set-input--numeric {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: var(--weight-semibold);
+}
+
+.set-input::placeholder {
+  /* Placeholder text is live text in an active control - 1.4.3 applies
+     to it, unlike a disabled control. */
+  color: var(--text-tertiary);
+}
+
+/* A field sized to a figure rather than the full row. */
+.set-field--inline {
+  width: 132px;
+  flex-shrink: 0;
+}
+
+.set-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--negative-text);
+}
+
+.set-error__glyph {
+  flex-shrink: 0;
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-normal);
+}
+
+/* --------------------------------------------------------------- toggle */
+
+.set-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--tap-min);
+}
+
+.set-toggle__track {
+  position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-strong);
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.set-toggle[aria-checked='true'] .set-toggle__track {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.set-toggle__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.set-toggle[aria-checked='true'] .set-toggle__knob {
+  transform: translateX(18px);
+}
+
+/* The state is never carried by colour alone (§63): position, plus a word. */
+.set-toggle__word {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  min-width: 26px;
+  text-align: left;
+}
+
+/* -------------------------------------------------------- goal history */
+
+.set-history {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.set-history__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+  font-size: var(--text-sm);
+}
+
+.set-history__item + .set-history__item {
+  border-top: 1px solid var(--divider);
+}
+
+.set-history__period {
+  color: var(--text-secondary);
+  min-width: 0;
+}
+
+.set-history__amount {
+  flex-shrink: 0;
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.set-history__amount--off {
+  color: var(--text-tertiary);
+  font-weight: var(--weight-regular);
+}
+
+/* The row currently in force. */
+.set-history__item--current .set-history__period,
+.set-history__item--current .set-history__amount {
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------- change preview */
+
+/* Shown while a goal or rate edit is pending, so the prospective rule is
+   visible before the user commits to it (§32, §69). */
+.set-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--accent-weak);
+  border: 1px solid var(--accent);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.set-preview__line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.set-preview__marker {
+  flex-shrink: 0;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-text);
+  width: 72px;
+}
+
+/* ------------------------------------------------------------ categories */
+
+.set-cat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 60px;
+  padding: var(--space-2) 0;
+}
+
+.set-cat + .set-cat {
+  border-top: 1px solid var(--divider);
+}
+
+.set-cat__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+.set-cat__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.set-cat__name {
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.set-cat__meta {
+  margin-top: 2px;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.set-cat__actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.set-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .set-iconbtn:hover:not(:disabled) {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+}
+
+.set-iconbtn:disabled {
+  color: var(--text-disabled);
+  cursor: default;
+}
+
+/* Inactive / status badge. Word first, tint second (§63). */
+.set-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  background: var(--neutral-weak);
+  color: var(--neutral-text);
+}
+
+.set-badge--warning {
+  background: var(--warning-weak);
+  color: var(--warning-text);
+}
+
+.set-badge--positive {
+  background: var(--positive-weak);
+  color: var(--positive-text);
+}
+
+/* --------------------------------------------------------------- chips */
+
+.set-daygrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: var(--space-2);
+}
+
+/* Week-starts-on carries all seven days rather than Sunday/Monday alone, so at
+   360px each segment gets about 44px. The default segment padding would push
+   "Wed" into an ellipsis; the labels are already three letters and each option
+   carries the full day name as its accessible name. */
+.set-weekstart .segmented__option {
+  padding: 0 2px;
+  letter-spacing: 0;
+}
+
+/* --------------------------------------------------------- excluded dates */
+
+.set-datelist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.set-datechip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--tap-min);
+  padding-left: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  font-size: var(--text-sm);
+  overflow: hidden;
+}
+
+/* Full-height so the target clears 44px even though the glyph is small. */
+.set-datechip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: var(--tap-min);
+  min-height: var(--tap-min);
+  color: var(--text-tertiary);
+}
+
+/* A field that grows beside a fixed-width button. */
+.set-inline-add {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.set-inline-add > .set-field {
+  flex: 1 1 200px;
+}
+
+@media (hover: hover) {
+  .set-datechip__remove:hover {
+    background: var(--negative-weak);
+    color: var(--negative-text);
+  }
+}
+
+/* --------------------------------------------------------------- actions */
+
+.set-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.set-actions--split {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.set-actions > * {
+  flex: 1 1 180px;
+}
+
+.set-actions--hug > * {
+  flex: 0 0 auto;
+}
+
+/* ----------------------------------------------------------- data screen */
+
+/* The §38 lead. The single accent card on the Data screen. */
+.set-protect__lede {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4);
+}
+
+.set-backup-state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* Restore summary — the §40 confirmation figures. */
+.set-summary {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  padding: var(--space-2) var(--space-4);
+}
+
+.set-summary__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+}
+
+.set-summary__row + .set-summary__row {
+  border-top: 1px solid var(--divider);
+}
+
+.set-summary__key {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.set-summary__value {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* The consequence block in the restore sheet and other one-way actions. */
+.set-consequence {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--negative-weak);
+  border: 1px solid var(--negative);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+}
+
+.set-consequence__glyph {
+  flex-shrink: 0;
+  color: var(--negative-text);
+  font-weight: var(--weight-bold);
+}
+
+.set-consequence strong {
+  font-weight: var(--weight-semibold);
+}
+
+.set-sheet-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.set-issues {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-4);
+  list-style: disc;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.set-issues li {
+  list-style: disc;
+  margin-top: var(--space-1);
+}
+
+/* ------------------------------------------------------------- desktop */
+
+@media (min-width: 900px) {
+  .set-field--wide {
+    max-width: 380px;
+  }
+}
+
+/* Backup save-confirmation sheet */
+.data__prose {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.data__prose--muted {
+  color: var(--text-secondary);
+}
+
+.data__sheet-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.data__sheet-actions > * {
+  flex: 1;
+}

@@ -1,0 +1,327 @@
+/* =========================================================================
+   Onboarding — spec §7–8. Owned by the Home team.
+   Tokens only: no literal colour, radius, shadow or font size lives here.
+   ========================================================================= */
+
+/* The shell (chromeless) already supplies the horizontal gutter and the top
+   safe area, so this only claims the vertical rhythm and the bottom inset. */
+.ob {
+  min-height: calc(100dvh - var(--space-10));
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-4) calc(var(--safe-bottom) + var(--space-6));
+}
+
+.ob__inner {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-6);
+}
+
+/* ------------------------------------------------------------- progress */
+
+.ob__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ob__dots {
+  display: flex;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.ob__dot {
+  height: 4px;
+  flex: 1;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunken);
+  transition: background-color var(--dur-base) var(--ease-standard);
+}
+
+.ob__dot--done {
+  background: var(--accent);
+}
+
+.ob__step-count {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- body */
+
+.ob__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.ob__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+.ob__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  flex: none;
+}
+
+.ob__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.ob--welcome .ob__title {
+  font-size: var(--num-md);
+}
+
+.ob__lede {
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.ob__note {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* -------------------------------------------------------------- fields */
+
+.ob__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.ob__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ob__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.ob__optional {
+  font-weight: var(--weight-regular);
+  color: var(--text-tertiary);
+}
+
+.ob__input,
+.ob__amount input {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.ob__input::placeholder,
+.ob__amount input::placeholder {
+  /* Placeholder text is live text in an active control - 1.4.3 applies
+     to it, unlike a disabled control. */
+  color: var(--text-tertiary);
+}
+
+.ob__input:focus-visible,
+.ob__amount input:focus-visible {
+  border-color: var(--accent);
+}
+
+.ob__hint {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.ob__error {
+  font-size: var(--text-xs);
+  color: var(--negative-text);
+  font-weight: var(--weight-medium);
+}
+
+/* Amount input with a leading currency glyph. */
+.ob__amount {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ob__amount-symbol {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--text-tertiary);
+  font-weight: var(--weight-semibold);
+  pointer-events: none;
+}
+
+.ob__amount input {
+  padding-left: var(--space-8);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.ob__amount--suffix input {
+  padding-left: var(--space-4);
+  padding-right: var(--space-10);
+}
+
+.ob__amount-suffix {
+  position: absolute;
+  right: var(--space-4);
+  color: var(--text-tertiary);
+  font-weight: var(--weight-semibold);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- goals */
+
+.ob__goal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.ob__goal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.ob__goal-name {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ob__goal-title {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+}
+
+/* ------------------------------------------------------------- weekdays */
+
+.ob__weekdays {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+@media (min-width: 420px) {
+  .ob__weekdays {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+.ob__weekday {
+  min-height: var(--tap-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
+}
+
+.ob__weekday[aria-pressed='true'] {
+  background: var(--accent-weak);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.ob__weekday-check {
+  width: 12px;
+  height: 12px;
+  margin-right: var(--space-1);
+}
+
+/* -------------------------------------------------------------- summary */
+
+.ob__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+}
+
+.ob__summary-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.ob__summary-row:last-child {
+  border-bottom: 0;
+}
+
+.ob__summary-term {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.ob__summary-value {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+  text-align: right;
+}
+
+.ob__summary-value--off {
+  font-weight: var(--weight-regular);
+  color: var(--text-tertiary);
+}
+
+/* -------------------------------------------------------------- actions */
+
+.ob__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+.ob__actions-row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.ob__actions-row > * {
+  flex: 1;
+}

@@ -1,0 +1,63 @@
+.persist-error {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(var(--safe-top, 0px) + var(--space-3));
+  z-index: var(--z-toast, 900);
+  width: min(560px, calc(100vw - var(--space-6)));
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--negative-weak);
+  border: 1px solid var(--negative);
+  box-shadow: var(--shadow-lg);
+}
+
+.persist-error__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.persist-error__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  color: var(--negative-text);
+}
+
+.persist-error__message,
+.persist-error__hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.persist-error__hint {
+  margin-top: var(--space-2);
+  color: var(--text-tertiary);
+}
+
+.persist-error__dismiss {
+  flex: none;
+  min-height: var(--tap-min, 44px);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.persist-error__dismiss:hover {
+  background: var(--surface-hover);
+}
+
+.persist-error__dismiss:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

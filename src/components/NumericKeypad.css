@@ -1,0 +1,114 @@
+/* NumericKeypad — spec §14/§55. The most-used control in the product: the
+   sale amount must be enterable one-handed, without the OS keyboard, in
+   about three interactions. Keys are deliberately oversized. */
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  width: 100%;
+  user-select: none;
+}
+
+.keypad__key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--num-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  transition:
+    background-color var(--dur-instant) var(--ease-standard),
+    transform var(--dur-instant) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .keypad__key:hover { background: var(--surface-active); }
+}
+
+.keypad__key:active {
+  background: var(--surface-active);
+  transform: scale(0.96);
+}
+
+.keypad__key--wide { grid-column: span 2; }
+
+.keypad__key--action {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+@media (hover: hover) {
+  .keypad__key--action:hover { background: var(--surface-sunken); color: var(--text-primary); }
+}
+
+.keypad__key:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Compact variant for short screens (landscape phone, small viewport). */
+@media (max-height: 700px) {
+  .keypad__key { min-height: 50px; font-size: var(--num-xs); }
+}
+
+/* --------------------------------------------------- the amount display */
+
+.keypad-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--space-4) 0 var(--space-5);
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  min-height: 1em;
+}
+
+.keypad-display__currency {
+  font-size: var(--num-md);
+  color: var(--text-tertiary);
+  font-weight: var(--weight-semibold);
+  align-self: flex-start;
+  margin-top: 0.35em;
+}
+
+.keypad-display__amount {
+  font-size: var(--num-hero);
+  overflow-wrap: anywhere;
+}
+
+/* The placeholder figure is real, informational text, not an inactive
+   control — it takes --text-tertiary (AA), never --text-disabled. */
+.keypad-display--empty .keypad-display__amount { color: var(--text-tertiary); }
+
+.keypad-display__caret {
+  width: 2px;
+  height: 0.72em;
+  background: var(--accent);
+  border-radius: 1px;
+  align-self: center;
+  margin-left: 2px;
+  animation: keypad-caret 1.05s step-end infinite;
+}
+
+@keyframes keypad-caret {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keypad-display__caret { animation: none; }
+}
+
+:root[data-reduced-motion='true'] .keypad-display__caret { animation: none; }

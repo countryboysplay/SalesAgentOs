@@ -1,0 +1,78 @@
+/* LoadingScreen — spec §61. Centred mark, the name, one quiet line.
+   No spinner, no percentage, and above all no connection language: there is
+   nothing to connect to. It is visible for a few hundred milliseconds while
+   IndexedDB opens, and then never again. */
+
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: var(--ground);
+  color: var(--text-primary);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.loading__mark {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-2);
+  animation: loading-mark-in var(--dur-slow) var(--ease-out);
+}
+
+@keyframes loading-mark-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.loading__name {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin: 0;
+}
+
+.loading__tagline {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Error variant — same furniture, calmer copy, and a way forward. */
+.loading__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  width: min(320px, 100%);
+}
+
+.loading__detail {
+  margin-top: var(--space-5);
+  max-width: 44ch;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+}
+
+.loading__code {
+  margin-top: var(--space-3);
+  max-width: 100%;
+  overflow-x: auto;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

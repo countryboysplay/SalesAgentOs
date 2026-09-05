@@ -1,0 +1,79 @@
+/* StatTile — label + big number + sub-label. Spec §48/§50: the figure must
+   visually dominate; the label is deliberately small and quiet. */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.stat--center { align-items: center; text-align: center; }
+
+.stat__label {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+}
+
+.stat__value {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  /* Long figures shrink rather than wrap or overflow their card. */
+  overflow-wrap: anywhere;
+}
+
+.stat--xs .stat__value { font-size: var(--num-xs); }
+.stat--sm .stat__value { font-size: var(--num-sm); }
+.stat--md .stat__value { font-size: var(--num-md); }
+.stat--lg .stat__value { font-size: var(--num-lg); }
+.stat--xl .stat__value { font-size: var(--num-xl); }
+
+/* The "$742" of the Today card. Nothing else on the screen may use this. */
+.stat--hero .stat__value {
+  font-size: var(--num-hero);
+  letter-spacing: -0.03em;
+}
+
+.stat--hero .stat__label { font-size: var(--text-xs); }
+
+.stat__sub {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+  margin-top: var(--space-1);
+}
+
+/* Tone applies to the VALUE, and callers must pass a sub-label or badge that
+   states the meaning in words — colour is never the only signal (§63). */
+.stat--tone-positive .stat__value { color: var(--positive-text); }
+.stat--tone-warning  .stat__value { color: var(--warning-text); }
+.stat--tone-negative .stat__value { color: var(--negative-text); }
+.stat--tone-accent   .stat__value { color: var(--accent-text); }
+.stat--tone-muted    .stat__value { color: var(--text-secondary); }
+
+/* Sub-label tinting is separate so "Above goal" can be green while the
+   figure itself stays near-black. */
+.stat__sub--positive { color: var(--positive-text); font-weight: var(--weight-medium); }
+.stat__sub--warning  { color: var(--warning-text);  font-weight: var(--weight-medium); }
+.stat__sub--negative { color: var(--negative-text); font-weight: var(--weight-medium); }
+
+/* --------------------------------------------------- StatGrid (§11 strip) */
+
+.stat-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(var(--stat-grid-cols, 3), minmax(0, 1fr));
+}
+
+@media (max-width: 400px) {
+  .stat-grid { gap: var(--space-2); }
+}
