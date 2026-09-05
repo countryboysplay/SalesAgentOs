@@ -202,7 +202,26 @@ export function Sheet({
   useEffect(() => {
     if (!open) return
     lockBodyScroll()
-    return unlockBodyScroll
+
+    // Belt-and-suspenders against mobile Safari: useFocusTrap focuses
+    // `initialFocus` with `preventScroll: true`, but WebKit does not always
+    // honour that flag, especially inside a nested scroll container (the
+    // installed-PWA "Add Sale" sheet, focused on its amount display). When it
+    // doesn't, the sheet opens already scrolled part-way down — the header
+    // sits outside .sheet__body so it looks fine, but everything above the
+    // scroll offset (the amount display, the first keypad row) renders
+    // clipped. Force the body back to the top on the same frame the focus
+    // call lands, so any native scroll-into-view is overridden rather than
+    // raced.
+    const body = panelRef.current?.querySelector<HTMLElement>('.sheet__body')
+    const raf = requestAnimationFrame(() => {
+      if (body) body.scrollTop = 0
+    })
+
+    return () => {
+      cancelAnimationFrame(raf)
+      unlockBodyScroll()
+    }
   }, [open])
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {

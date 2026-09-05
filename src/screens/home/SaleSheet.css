@@ -10,9 +10,13 @@
 }
 
 /* The amount region is programmatically focused when the sheet opens (§55),
-   so it needs a visible ring of its own when that focus is keyboard-driven. */
+   so it needs a visible ring of its own when that focus is keyboard-driven.
+   scroll-margin-top is a second line of defence, alongside Sheet's own
+   scrollTop reset, against mobile Safari scrolling this into view flush
+   against the sheet's edge despite focus({ preventScroll: true }). */
 .sale-sheet__amount {
   border-radius: var(--radius-lg);
+  scroll-margin-top: var(--space-2);
 }
 
 .sale-sheet__section {
