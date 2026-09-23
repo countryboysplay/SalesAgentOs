@@ -83,7 +83,7 @@ export function useLedgerRoute(): LedgerRoute {
 /* ---------------------------------------------------------------- filters */
 
 /** Sentinel for "sales with no category" in the category filter. */
-export const UNCATEGORISED = '0000uncategorised'
+export const UNCATEGORISED = '\u0000uncategorised'
 
 export interface SaleFilters {
   /** Free text. Applies mainly to notes (§71). */

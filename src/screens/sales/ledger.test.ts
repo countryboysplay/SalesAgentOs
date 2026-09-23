@@ -17,8 +17,15 @@ import {
   buildSalePredicate,
   describeFilters,
   hasActiveFilters,
+  UNCATEGORISED,
   type SaleFilters,
 } from './ledger'
+
+// The NUL prefix is what keeps the sentinel from ever equalling a real id.
+it('UNCATEGORISED starts with a NUL character', () => {
+  expect(UNCATEGORISED).toBe('\u0000uncategorised')
+  expect(UNCATEGORISED.charCodeAt(0)).toBe(0)
+})
 
 const RENEWALS = makeCategory({ id: 'cat-renewals', name: 'Renewals' })
 const CATEGORIES = new Map([[RENEWALS.id, RENEWALS]])

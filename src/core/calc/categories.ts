@@ -54,7 +54,7 @@ export function categoryPerformance(
 
   const bucketFor = (categoryId: string | null): Bucket => {
     // null and 'null' can never collide because ids are prefixed on lookup.
-    const key = categoryId === null ? '0000uncategorised' : `id:${categoryId}`
+    const key = categoryId === null ? '\u0000uncategorised' : `id:${categoryId}`
     let bucket = buckets.get(key)
     if (!bucket) {
       const category = categoryId === null ? undefined : byId.get(categoryId)
