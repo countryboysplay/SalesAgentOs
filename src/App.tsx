@@ -12,6 +12,7 @@ import HomeScreen from '@/screens/home/HomeScreen'
 import SalesScreen from '@/screens/sales/SalesScreen'
 import InsightsScreen from '@/screens/insights/InsightsScreen'
 import SettingsScreen from '@/screens/settings/SettingsScreen'
+import TeamScreen from '@/screens/team/TeamScreen'
 import OnboardingFlow from '@/screens/onboarding/OnboardingFlow'
 import AddSaleSheet from '@/screens/home/AddSaleSheet'
 
@@ -23,6 +24,8 @@ function Routes() {
   if (path === ROUTES.home) return <HomeScreen />
   if (segments[0] === 'sales') return <SalesScreen />
   if (segments[0] === 'insights') return <InsightsScreen />
+  // Team owns /team/* (Playbook today) and reads its sub-route itself.
+  if (segments[0] === 'team') return <TeamScreen />
   // Settings owns everything under /settings/* and reads the sub-route itself
   // via useSubRoute('/settings').
   if (segments[0] === 'settings') return <SettingsScreen />

@@ -14,7 +14,7 @@ import {
  *
  * Hash routing, not history routing, because the app is a file-served PWA
  * that must work from any scope without a server rewrite rule. There is no
- * react-router: the whole route table is four tabs and a handful of settings
+ * react-router: the whole route table is five tabs and a handful of settings
  * sub-pages, and a router is not worth 12KB of an offline bundle.
  *
  * URL shape:   #/sales?tab=month&date=2026-09-04
@@ -27,6 +27,7 @@ export const ROUTES = {
   home: '/',
   sales: '/sales',
   insights: '/insights',
+  team: '/team',
   settings: '/settings',
   settingsGoals: '/settings/goals',
   settingsCommission: '/settings/commission',
@@ -40,8 +41,8 @@ export const ROUTES = {
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES]
 
-/** The four bottom-nav destinations (§6). */
-export type PrimaryTab = 'home' | 'sales' | 'insights' | 'settings'
+/** The bottom-nav destinations (§6, plus Team). */
+export type PrimaryTab = 'home' | 'sales' | 'insights' | 'team' | 'settings'
 
 export interface Location {
   /** Always starts with '/', never contains '?' or '#'. */
@@ -78,7 +79,9 @@ function parseHash(hash: string): Location {
   const segments = path.split('/').filter(Boolean)
   const head = segments[0]
   const tab: PrimaryTab =
-    head === 'sales' || head === 'insights' || head === 'settings' ? head : 'home'
+    head === 'sales' || head === 'insights' || head === 'team' || head === 'settings'
+      ? head
+      : 'home'
 
   return { path, query, segments, tab }
 }

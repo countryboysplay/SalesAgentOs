@@ -3,6 +3,9 @@
 A personal sales-performance tracker for inside sales agents. It answers three
 questions the moment you open it: how am I doing today, this month, this year.
 
+It also carries a **Playbook** (Team tab): the team's call training material,
+organized by call stage, searchable and readable offline.
+
 It is deliberately **not a CRM**. No leads, no customers, no territories, no
 team. It is one salesperson's private ledger and scoreboard.
 
@@ -34,7 +37,9 @@ src/core/      calculations — money, dates, pace, records. No I/O, fully teste
 src/data/      IndexedDB persistence, backup/restore, CSV export.
 src/app/       store, router, shell, theme.
 src/components/ design-system primitives.
-src/screens/   Home, Sales, Insights, Settings, Onboarding.
+src/kb/        Playbook: knowledge-pack parser, content model, offline search.
+src/kb/packs/  The training material itself, as Markdown, in the owner's wording.
+src/screens/   Home, Sales, Insights, Team, Settings, Onboarding.
 docs/          ARCHITECTURE.md (build contract), DESIGN-SYSTEM.md.
 ```
 

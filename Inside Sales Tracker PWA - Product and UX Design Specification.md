@@ -127,6 +127,8 @@ Mobile navigation uses a fixed bottom navigation bar.
 
 **Insights**
 
+**Team** — the Playbook (call knowledge base). Added after the original spec; see `docs/ARCHITECTURE.md`.
+
 **Settings**
 
 A prominent floating **+ Sale** button sits above the navigation bar.

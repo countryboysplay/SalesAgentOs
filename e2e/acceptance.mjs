@@ -156,7 +156,7 @@ await context.setOffline(false)
 console.log('\nNavigation (§6)')
 await page.reload({ waitUntil: 'networkidle' })
 await page.waitForTimeout(700)
-for (const tab of ['Sales', 'Insights', 'Settings', 'Home']) {
+for (const tab of ['Sales', 'Insights', 'Team', 'Settings', 'Home']) {
   const re = new RegExp(`^${tab}$`, 'i')
   const link = page.getByRole('link', { name: re }).or(page.getByRole('button', { name: re }))
   if (await link.count()) {
@@ -168,6 +168,22 @@ for (const tab of ['Sales', 'Insights', 'Settings', 'Home']) {
     check(`${tab} nav item present`, false, 'not found')
   }
 }
+
+console.log('\nPlaybook (Team tab)')
+await page.getByRole('link', { name: /^Team$/i }).first().click()
+await page.waitForTimeout(400)
+await page.fill('input[type=search]', 'scarcity')
+await page.waitForTimeout(400)
+const firstResult = page.locator('.kb-row').first()
+check('search finds a topic', /scarcity/i.test(await firstResult.innerText()))
+await firstResult.click()
+await page.waitForTimeout(600)
+check('opens the article at that topic', await page.locator('#kb-scarcity').isVisible())
+await context.setOffline(true)
+await page.reload({ waitUntil: 'load' })
+await page.waitForTimeout(800)
+check('Playbook reads offline', /Real scarcity is information/.test(await body()))
+await context.setOffline(false)
 
 console.log('\nAppearance (§45)')
 for (const theme of ['dark', 'light']) {

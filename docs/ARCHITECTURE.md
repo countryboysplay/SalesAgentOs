@@ -58,6 +58,25 @@ they stay readable at 360px and add zero bundle weight.
 | `src/screens/sales/*` | Ledger: day/month/year/all, calendar (§19–25). | Sales team |
 | `src/screens/insights/*` | Insights + charts (§26–31). | Insights team |
 | `src/screens/settings/*` | Goals, commission, categories, data (§32–45). | Settings team |
+| `src/kb/*` | Playbook content model, Markdown subset parser, offline search. | Team |
+| `src/kb/packs/*` | Training material as Markdown + one manifest per pack. | Team |
+| `src/screens/team/*` | Team tab: Playbook home, stages, packs, reader. | Team |
+
+## Playbook (knowledge base)
+Training packs ship **inside the bundle** (`?raw` Markdown imports), so they
+are precached by the service worker and read offline from first install. They
+are read-only, never stored in IndexedDB and never part of a backup.
+
+- Keep the owner's wording. Structural edits only (headings, list form).
+- A pack is cut into articles at `##`; each `###` is a topic that call stages
+  and search results link to. A manifest can split a `##` into one article per
+  `###`, mark articles `coaching`, tag articles/topics with call stages and
+  feature one article.
+- To add a pack: drop `src/kb/packs/<name>.md`, write a manifest next to it,
+  add it to `MANIFESTS` in `src/kb/library.ts`. `library.test.ts` fails if a
+  stage tag points at a heading that does not exist.
+- The app is served publicly (GitHub Pages), so **anything in a pack is
+  public**. Confidential pricing does not belong in a pack.
 
 **Do not create files outside your assigned directory.** If you need a shared
 primitive that doesn't exist, note it in your final report rather than adding it
