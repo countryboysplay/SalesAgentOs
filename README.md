@@ -3,6 +3,9 @@
 A personal sales-performance tracker for inside sales agents. It answers three
 questions the moment you open it: how am I doing today, this month, this year.
 
+It also carries a **Playbook** (Team tab): the team's call training material,
+organized by call stage, searchable and readable offline.
+
 It is deliberately **not a CRM**. No leads, no customers, no territories, no
 team. It is one salesperson's private ledger and scoreboard.
 
@@ -12,6 +15,13 @@ No backend. No account. No cloud. No sync. Your sales history lives in your
 browser's local storage on the device where you installed the app, and it never
 leaves. That is a feature, and it is also why **backups matter** — see
 Settings → Data.
+
+**One exception, read-only:** the Team tab's **Boards** read the team's two
+Google Apps Script dashboards (Employee Sales Scoreboard, GSR) so agents can
+see where the team stands. That is a plain GET of team numbers. Nothing about
+your own sales is ever sent. The only thing that goes out is the GSR access
+key you entered. The last board is kept on the device and shown, with its
+time, when you're offline. Apps Script setup: `docs/apps-script/README.md`.
 
 ## Running it
 
@@ -34,7 +44,9 @@ src/core/      calculations — money, dates, pace, records. No I/O, fully teste
 src/data/      IndexedDB persistence, backup/restore, CSV export.
 src/app/       store, router, shell, theme.
 src/components/ design-system primitives.
-src/screens/   Home, Sales, Insights, Settings, Onboarding.
+src/kb/        Playbook: knowledge-pack parser, content model, offline search.
+src/kb/packs/  The training material itself, as Markdown, in the owner's wording.
+src/screens/   Home, Sales, Insights, Team, Settings, Onboarding.
 docs/          ARCHITECTURE.md (build contract), DESIGN-SYSTEM.md.
 ```
 

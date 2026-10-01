@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { ToastProvider } from '@/components'
 import { AppShell } from '@/app/AppShell'
 import { ErrorBoundary } from '@/app/ErrorBoundary'
@@ -15,6 +15,11 @@ import SettingsScreen from '@/screens/settings/SettingsScreen'
 import OnboardingFlow from '@/screens/onboarding/OnboardingFlow'
 import AddSaleSheet from '@/screens/home/AddSaleSheet'
 
+// Team (Playbook content + boards) is its own chunk so Home does not parse
+// the training packs at boot. The service worker precaches it, so it still
+// opens offline.
+const TeamScreen = lazy(() => import('@/screens/team/TeamScreen'))
+
 
 /** Maps the current route to a screen. The route table is small enough to read. */
 function Routes() {
@@ -23,6 +28,14 @@ function Routes() {
   if (path === ROUTES.home) return <HomeScreen />
   if (segments[0] === 'sales') return <SalesScreen />
   if (segments[0] === 'insights') return <InsightsScreen />
+  // Team owns /team/* (Playbook today) and reads its sub-route itself.
+  if (segments[0] === 'team') {
+    return (
+      <Suspense fallback={null}>
+        <TeamScreen />
+      </Suspense>
+    )
+  }
   // Settings owns everything under /settings/* and reads the sub-route itself
   // via useSubRoute('/settings').
   if (segments[0] === 'settings') return <SettingsScreen />

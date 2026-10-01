@@ -27,6 +27,7 @@ const ICONS: Record<PrimaryTab, string> = {
   home: 'M3.6 10.4 12 3.8l8.4 6.6M5.6 9v10.2h12.8V9',
   sales: 'M4 5.5h16M4 12h16M4 18.5h10',
   insights: 'M4 19V5m0 14h16M8 15.5V11m4 4.5V7.5m4 8V13',
+  team: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 9c0-3.3 2.7-6 6-6s6 2.7 6 6m1.5-9.2a3 3 0 1 0-.9-5.9M18 14.3c1.8.8 3 2.6 3 4.7',
   settings:
     'M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm8-3.2a8 8 0 0 0-.14-1.5l2-1.55-2-3.46-2.4.96a8 8 0 0 0-2.6-1.5L14.5 2h-5l-.36 2.55a8 8 0 0 0-2.6 1.5l-2.4-.96-2 3.46 2 1.55a8.1 8.1 0 0 0 0 3l-2 1.55 2 3.46 2.4-.96a8 8 0 0 0 2.6 1.5L9.5 22h5l.36-2.55a8 8 0 0 0 2.6-1.5l2.4.96 2-3.46-2-1.55c.09-.49.14-.99.14-1.5Z',
 }
@@ -57,6 +58,7 @@ const NAV: NavDestination[] = [
   { tab: 'home', to: ROUTES.home, label: 'Home' },
   { tab: 'sales', to: ROUTES.sales, label: 'Sales' },
   { tab: 'insights', to: ROUTES.insights, label: 'Insights' },
+  { tab: 'team', to: ROUTES.team, label: 'Team' },
   { tab: 'settings', to: ROUTES.settings, label: 'Settings' },
 ]
 
@@ -76,11 +78,11 @@ export interface AppShellProps {
 /**
  * AppShell — the layout, and the only place navigation exists.
  *
- * MOBILE (< 900px): scrolling content, a fixed four-item bottom bar, and a
+ * MOBILE (< 900px): scrolling content, a fixed five-item bottom bar, and a
  * floating "+ Sale" pill above it on the right, within thumb reach (§6, §58).
  *
  * DESKTOP (>= 900px): the bottom bar and the floating button both disappear.
- * The same four destinations become a left rail, and "+ Sale" becomes the
+ * The same five destinations become a left rail, and "+ Sale" becomes the
  * rail's primary button at the top — so it is still the most prominent
  * control, just where a pointer expects it. Content is centred and capped at
  * --content-max; screens opt into multiple columns with .shell-split and
