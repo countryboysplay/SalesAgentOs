@@ -43,6 +43,7 @@ import {
   type StorageEstimateResult,
 } from '@/data'
 import { toIso } from '@/core/date'
+import { clearTeamData } from '@/team/teamStore'
 import { formatDate, formatNumber } from '@/core/format'
 import type { BackupFile, BackupReminder, BackupSummary, Millis, Settings } from '@/core/types'
 import { KeyValue, Note, SettingsPage } from './parts'
@@ -272,6 +273,9 @@ export default function DataSettings() {
     setWorking(true)
     try {
       await resetAllData()
+      // The Team tab's board settings and cached boards live in their own
+      // database; "delete everything" includes them.
+      await clearTeamData()
       // Same reason as restore: the store is holding a database that no longer
       // exists. Reloading also flips the app back to first-run setup — and if
       // the fresh database cannot be read, that is reported here rather than

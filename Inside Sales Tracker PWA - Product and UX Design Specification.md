@@ -42,6 +42,8 @@ The application must operate with:
 
 All sales information must remain on the device where the user installs the application.
 
+> **Amendment (Team boards):** the Team tab may *read* the team's scoreboard and GSR dashboard feeds over the network. This is read-only, never sends the agent's sales data, and shows the last saved board offline. See `docs/ARCHITECTURE.md`.
+
 ### Local storage responsibilities
 
 Use two distinct local mechanisms conceptually:

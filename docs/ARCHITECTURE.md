@@ -11,6 +11,9 @@ authoritative on structure.
 
 ## Hard constraints (spec §2, §36, §62)
 - No backend, no auth, no network calls, no analytics, no CDN fonts at runtime.
+  **Single exception:** `src/team/fetchBoard.ts` reads the two team dashboard
+  feeds for Team → Boards (GET only, no cookies, never sends sales data). No
+  other module may touch the network.
 - All data in IndexedDB on the device. App shell cached by a service worker.
 - Never use the words: Sync, Cloud, Account, Server, Connected. Use: Saved,
   Stored locally, On this device, Backup created.
@@ -60,7 +63,18 @@ they stay readable at 360px and add zero bundle weight.
 | `src/screens/settings/*` | Goals, commission, categories, data (§32–45). | Settings team |
 | `src/kb/*` | Playbook content model, Markdown subset parser, offline search. | Team |
 | `src/kb/packs/*` | Training material as Markdown + one manifest per pack. | Team |
-| `src/screens/team/*` | Team tab: Playbook home, stages, packs, reader. | Team |
+| `src/screens/team/*` | Team tab: Playbook and Boards screens. | Team |
+| `src/team/*` | Board feeds: parse/validate (dollars → cents), fetch, on-device cache. | Team |
+
+## Team boards
+- Feeds: Employee Sales Scoreboard (`?format=json` on its existing public web
+  app) and a separate key-protected GSR feed project. Paste-in code and steps
+  are in `docs/apps-script/`.
+- Board settings (agent name, GSR link/key) and the last good copy of each
+  board live in a **separate** IndexedDB database, `salesagentos-team`. It
+  is not part of the sales schema or backups. *Delete everything* clears it too.
+- Cards refresh only while visible (scoreboard 30 s, GSR 60 s), keep the last
+  board on failure and always say what time the numbers are from.
 
 ## Playbook (knowledge base)
 Training packs ship **inside the bundle** (`?raw` Markdown imports), so they

@@ -16,6 +16,13 @@ browser's local storage on the device where you installed the app, and it never
 leaves. That is a feature, and it is also why **backups matter** — see
 Settings → Data.
 
+**One exception, read-only:** the Team tab's **Boards** read the team's two
+Google Apps Script dashboards (Employee Sales Scoreboard, GSR) so agents can
+see where the team stands. That is a plain GET of team numbers. Nothing about
+your own sales is ever sent. The only thing that goes out is the GSR access
+key you entered. The last board is kept on the device and shown, with its
+time, when you're offline. Apps Script setup: `docs/apps-script/README.md`.
+
 ## Running it
 
 ```bash

@@ -1,22 +1,24 @@
 /**
- * Team — the fifth tab. Today it holds the Playbook (the call knowledge
- * base); the team boards join it as a second section.
+ * Team — the fifth tab: the Playbook (call knowledge base) and the team
+ * Boards (scoreboard and GSR).
  *
- * Routes, all read here via useSubRoute('/team'):
+ * Routes, all read here from the path segments:
  *   #/team?q=price                     Playbook home, or search results
+ *   #/team/boards                      Scoreboard + GSR cards
  *   #/team/stage/discovery             one call stage
  *   #/team/pack/sales-psychology       one pack's contents
  *   #/team/read/<pack>/<article>?at=<topic>
  *
- * Content is bundled with the app, so every view here works offline and
- * nothing is read from or written to IndexedDB.
+ * Playbook content is bundled with the app, so it works offline and touches
+ * no storage. Boards read the network; see ./BoardsView.
  */
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Card, EmptyState, PageHeader } from '@/components'
+import { Card, EmptyState, PageHeader, SegmentedControl } from '@/components'
 import { Link, ROUTES, useRouter } from '@/app/router'
 import { getLibrary } from '@/kb/library'
 import type { Article, CallStage, KbRef } from '@/kb/model'
 import { highlight, search } from '@/kb/search'
+import BoardsView from './BoardsView'
 import { KbContent, topicDomId } from './KbContent'
 import './team.css'
 
@@ -29,7 +31,34 @@ export default function TeamScreen() {
   if (view === 'read' && a && b) return <ArticleView articleId={`${a}/${b}`} />
   if (view === 'stage' && a) return <StageView stageId={a} />
   if (view === 'pack' && a) return <PackView packId={a} />
-  return <PlaybookHome />
+  if (view === 'boards') return <TeamHome section="boards" />
+  return <TeamHome section="playbook" />
+}
+
+type Section = 'playbook' | 'boards'
+
+const SECTIONS = [
+  { value: 'playbook' as const, label: 'Playbook' },
+  { value: 'boards' as const, label: 'Boards' },
+]
+
+function TeamHome({ section }: { section: Section }) {
+  const { navigate } = useRouter()
+  return (
+    <div className="kb shell-stack">
+      <PageHeader
+        title="Team"
+        subtitle={section === 'playbook' ? 'Playbook · how to run a great call' : 'Boards · how the team is doing'}
+      />
+      <SegmentedControl
+        label="Team section"
+        options={SECTIONS}
+        value={section}
+        onChange={(next) => navigate(next === 'boards' ? `${ROUTES.team}/boards` : ROUTES.team, { replace: true })}
+      />
+      {section === 'playbook' ? <PlaybookHome /> : <BoardsView />}
+    </div>
+  )
 }
 
 /* -------------------------------------------------------------- shared rows */
@@ -112,9 +141,7 @@ function PlaybookHome() {
   const featured = lib.packs.flatMap((p) => (p.featured ? [p.featured] : []))
 
   return (
-    <div className="kb shell-stack">
-      <PageHeader title="Team" subtitle="Playbook · how to run a great call" />
-
+    <>
       <div className="kb-search" role="search">
         <svg className="kb-search__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
           <circle cx="8.6" cy="8.6" r="5.4" />
@@ -179,7 +206,7 @@ function PlaybookHome() {
           </Card>
         </>
       )}
-    </div>
+    </>
   )
 }
 
